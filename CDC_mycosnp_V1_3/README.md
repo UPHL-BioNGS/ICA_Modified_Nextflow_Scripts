@@ -1,4 +1,8 @@
 # CDC_mycosnp_V1_3
+Source Git Repository: https://github.com/CDCgov/mycosnp-nf
+
+By: Michael Cipriano @mjcipriano Sateesh Peri @sateeshperi Hunter Seabolt @hseabolt Chris Sandlin @cssandlin Drewry Morris @drewry Lynn Dotrang @leuthrasp Christopher Jossart @cjjossart Robert A. Petit III @rpetit3
+
 In order for this pipeline to run successfully you must provide the following files which are labeled with there association fields in the XML:
 
 ## INPUT_SAMPLES
