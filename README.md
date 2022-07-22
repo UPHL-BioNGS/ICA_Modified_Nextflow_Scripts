@@ -9,3 +9,5 @@ I will also include a file with the SRA ids for samples that would run in each p
 You can use the SRA toolkit FASTQDump to get this samples to test the pipelines as well. 
 
 Some pipelines have python scripts that help UPHL initiate runs; I will also included those in the pipelines directory but they are not needed for runs to work on ICA. 
+
+I would also like to point out a useful tool that Ken Eng [@keng404](https://github.com/keng404) of Illumina developed that is a good starting point for developing Nextflow pipelines for ICA. https://github.com/keng404/nextflow-to-icav2 I use it to help find all the params hidden within a Nextflow pipeline.
