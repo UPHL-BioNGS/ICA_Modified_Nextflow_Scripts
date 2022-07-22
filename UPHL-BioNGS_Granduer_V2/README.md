@@ -1,4 +1,8 @@
 # UPHL-BioNGS_Granduer_V2
+Source Git Repository: [https://github.com/UPHL-BioNGS/Grandeur](https://github.com/UPHL-BioNGS/Grandeur)
+
+By: [@erinyoung](https://github.com/erinyoung)
+
 This ICA pipeline was set up to run Granduer on Fastq reads only, and not with some of the other optionality that is avaiable with Granduer.
 In order for this pipeline to run successfully you must provide the following files which are labeled with there association fields in the XML:
 
