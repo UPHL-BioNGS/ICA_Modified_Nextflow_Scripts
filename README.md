@@ -6,7 +6,9 @@ Mainly by editing subworkflows and modules manually that the config and parm fil
 Each folder in this repository represents a pipeline that work on ICA.
 main.nf and the xml_configuration are saved on ICA when pipelines are created; each of these files are located in each pipelines directory in this repository but they do not need to be uploaded ICA.
 I will also include a file with the SRA ids for samples that would run in each pipeline and around the usual number that UPHLs runs at a time.
-You can use the SRA toolkit FASTQDump to get this samples to test the pipelines as well. 
+You can use the SRA toolkit FASTQDump to get this samples to test the pipelines as well.
+
+I will try and include a file called example_samples_$INT.txt. This will be a simple text files with each row representing an SRA id that can be downloaded using the SRA Toolkit tool FASTQDUMP. 
 
 Some pipelines have python scripts that help UPHL initiate runs; I will also included those in the pipelines directory but they are not needed for runs to work on ICA. 
 
