@@ -3,9 +3,9 @@ Source Git Repository: https://github.com/UPHL-BioNGS/Cecret
 
 By: [@erinyoung](https://github.com/erinyoung)
 
-In order for this pipeline to run successfully you must provide the following files which are labeled with there association fields in the XML:
+In order for this pipeline to run successfully you must provide the following files which are labeled with their associated fields in the XML:
 
-You need to provide samples to one of the following inputs; ```READS, SINGLE_READS, FASTAS, MULTIFASTAS``` Cecret can run with one or mix of samples of those types.
+You need to provide samples to one of the following inputs; ```READS, SINGLE_READS, FASTAS, MULTIFASTAS```. Cecret can run with one or a mix of samples of those types.
 
 ## READS
 Paired end fastq files in a directory
