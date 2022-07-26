@@ -4,7 +4,7 @@ Source Git Repository: [https://github.com/UPHL-BioNGS/Grandeur](https://github.
 By: [@erinyoung](https://github.com/erinyoung)
 
 This ICA pipeline was set up to run Granduer on Fastq reads only, and not with some of the other optionality that is avaiable with Granduer.
-In order for this pipeline to run successfully you must provide the following files which are labeled with there association fields in the XML:
+In order for this pipeline to run successfully you must provide the following files which are labeled with thier associated fields in the XML:
 
 ## READS
 A direcotry containing paired or single end reads as fastq files.
@@ -32,6 +32,7 @@ wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/old/minikraken2_v2_8GB_201904.tg
 tar -zxvf minikraken2_v2_8GB_201904.tgz 
 ```
 
+You can get the blast database using these commands:
 ```
 mkdir blast_db_refseq
 cd blast_db_refseq
