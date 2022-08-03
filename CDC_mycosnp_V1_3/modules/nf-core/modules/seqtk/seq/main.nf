@@ -2,10 +2,12 @@ process SEQTK_SEQ {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     cpus   = { 6 }
-    memory = { 20.GB }
+    memory = { 28.GB }
     time   = { 24.h  }
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)

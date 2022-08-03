@@ -1,6 +1,8 @@
 process SAMPLESHEET_CHECK {
     tag "$samplesheet"
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
 
     conda (params.enable_conda ? "conda-forge::python=3.8.3" : null)
@@ -14,9 +16,8 @@ process SAMPLESHEET_CHECK {
                 saveAs: { filename -> filename.equals('versions.yml') ? null : filename }
             ]
 
-    cpus   = { 2 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 1 }
+    memory = { 6.GB }
 
     input:
     path samplesheet

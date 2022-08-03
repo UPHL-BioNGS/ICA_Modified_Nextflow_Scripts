@@ -2,6 +2,8 @@ process QUALIMAP_BAMQC {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::qualimap=2.2.2d" : null)
@@ -14,8 +16,7 @@ process QUALIMAP_BAMQC {
     maxErrors     = '-1'
 
     cpus   = { 6 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
 
     ext.args         = { "" }
     ext.when         = {  }

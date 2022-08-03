@@ -2,10 +2,12 @@ process GATK4_COMBINEGVCFS {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
-    cpus   = { 8 }
-    memory = { 32.GB }
+    cpus   = { 6 }
+    memory = { 28.GB }
 
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)

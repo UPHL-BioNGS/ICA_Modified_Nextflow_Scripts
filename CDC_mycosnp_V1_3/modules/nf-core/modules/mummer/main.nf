@@ -4,11 +4,13 @@ process MUMMER {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 6 }
+    memory = { 28.GB }
+
 
     conda (params.enable_conda ? "bioconda::mummer=3.23" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

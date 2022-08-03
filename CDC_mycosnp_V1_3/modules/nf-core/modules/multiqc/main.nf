@@ -3,9 +3,10 @@ process MULTIQC {
 
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     cpus   = { 6 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
 
     conda (params.enable_conda ? 'bioconda::multiqc=1.11' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

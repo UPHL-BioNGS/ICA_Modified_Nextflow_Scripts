@@ -1,16 +1,17 @@
 process RAXMLNG {
     label 'process_high'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-medium'
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
 
     conda (params.enable_conda ? 'bioconda::raxml-ng=1.0.3' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/raxml-ng:1.0.3--h32fcf60_0' :
         'quay.io/biocontainers/raxml-ng:1.0.3--h32fcf60_0' }"
 
-    cpus   = { 16 }
-    memory = { 128.GB }
-    time   = { 24.h  }
+    cpus   = { 12 }
+    memory = { 56.GB }
 
     ext.args         = { "--all --model GTR+G --bs-trees 1000" }
     ext.errorStrategy = { "ignore" }

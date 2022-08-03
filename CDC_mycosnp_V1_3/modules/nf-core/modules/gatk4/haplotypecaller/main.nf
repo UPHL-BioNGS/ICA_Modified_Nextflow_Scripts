@@ -2,7 +2,9 @@ process GATK4_HAPLOTYPECALLER {
     tag "$meta.id"
     label 'process_medium'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -19,8 +21,8 @@ process GATK4_HAPLOTYPECALLER {
                 pattern: "*{vcf.gz,vcf.gz.tbi}"
             ]
 
-    cpus   = { 8 }
-    memory = { 32.GB }
+    cpus   = { 14 }
+    memory = { 60.GB }
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)

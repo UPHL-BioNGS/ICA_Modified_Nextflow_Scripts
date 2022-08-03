@@ -2,6 +2,8 @@ process SEQKIT_REPLACE {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? "bioconda::seqkit=2.1.0" : null)
@@ -21,9 +23,8 @@ process SEQKIT_REPLACE {
                 pattern: "vcf-to-fasta.fasta"
             ]
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     input:
     tuple val(meta), path(fastx)

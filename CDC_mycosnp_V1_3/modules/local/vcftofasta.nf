@@ -2,6 +2,8 @@ process VCF_TO_FASTA {
     tag "${meta.id}"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? "bioconda::scipy=1.1.0" : null)
@@ -13,9 +15,8 @@ process VCF_TO_FASTA {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     ext.when         = {  }
     publishDir       = [

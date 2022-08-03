@@ -2,6 +2,8 @@ process SEQTK_SAMPLE {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
@@ -23,8 +25,7 @@ process SEQTK_SAMPLE {
     maxErrors     = '-1'
 
     cpus   = { 6 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
 
     input:
     tuple val(meta), path(reads)

@@ -1,6 +1,8 @@
 process FASTTREE {
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::fasttree=2.1.10" : null)
@@ -13,8 +15,8 @@ process FASTTREE {
     maxErrors     = '-1'
 
     cpus   = { 6 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
+
 
     ext.args         = { "-gtr -gamma -fastest" }
     ext.errorStrategy = { "ignore" }

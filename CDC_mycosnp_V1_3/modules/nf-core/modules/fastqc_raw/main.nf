@@ -2,7 +2,9 @@ process FASTQC {
     tag "$meta.id"
     label 'process_medium'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::fastqc=0.11.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -20,9 +22,9 @@ process FASTQC {
                 saveAs: { filename -> filename.equals('versions.yml') ? null : filename }
             ]
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 6 }
+    memory = { 28.GB }
+
 
     input:
     tuple val(meta), path(reads)

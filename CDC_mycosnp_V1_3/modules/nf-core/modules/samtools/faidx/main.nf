@@ -2,6 +2,8 @@ process SAMTOOLS_FAIDX {
     tag "$fasta"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
@@ -22,9 +24,8 @@ process SAMTOOLS_FAIDX {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     input:
     tuple val(meta), path(fasta)

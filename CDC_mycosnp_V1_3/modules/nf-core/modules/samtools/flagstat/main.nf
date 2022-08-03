@@ -2,6 +2,8 @@ process SAMTOOLS_FLAGSTAT {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::samtools=1.15" : null)
@@ -14,8 +16,7 @@ process SAMTOOLS_FLAGSTAT {
     maxErrors     = '-1'
 
     cpus   = { 6 }
-    memory = { 36.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
 
     ext.args         = { "" }
     ext.when         = {  }

@@ -3,7 +3,7 @@ process SRATOOLS_PREFETCH {
     label 'process_low'
     label 'error_retry'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? 'bioconda::sra-tools=2.11.0' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -16,11 +16,10 @@ process SRATOOLS_PREFETCH {
                enabled: false
            ]
 
-    cpus   = { 2 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
-    errorStrategy = 'retry'
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     input:
     tuple val(meta), val(id)

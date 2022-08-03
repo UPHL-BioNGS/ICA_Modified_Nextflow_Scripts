@@ -2,6 +2,8 @@ process PICARD_CREATESEQUENCEDICTIONARY {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::picard=2.26.9" : null)
@@ -23,8 +25,7 @@ process PICARD_CREATESEQUENCEDICTIONARY {
     maxErrors     = '-1'
 
     cpus   = { 6 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
 
     input:
     tuple val(meta), path(fasta)

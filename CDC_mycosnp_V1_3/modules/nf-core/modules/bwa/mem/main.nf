@@ -2,7 +2,9 @@ process BWA_MEM {
     tag "$meta.id"
     label 'process_high'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17 bioconda::samtools=1.12" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,9 +15,8 @@ process BWA_MEM {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 8 }
-    memory = { 64.GB }
-    time   = { 24.h  }
+    cpus   = { 14 }
+    memory = { 56.GB }
 
     ext.args         = { "" }
     ext.when         = {  }

@@ -2,11 +2,13 @@ process BCFTOOLS_CONSENSUS {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     cpus   = { 6 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
+
 
     conda (params.enable_conda ? 'bioconda::bcftools=1.14' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

@@ -2,6 +2,8 @@ process PICARD_CLEANSAM {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::picard=2.26.9" : null)
@@ -14,8 +16,8 @@ process PICARD_CLEANSAM {
     maxErrors     = '-1'
 
     cpus   = { 6 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
+
 
     //ext.args         = { "--VALIDATION_STRINGENCY LENIENT" }
     ext.when         = {  }

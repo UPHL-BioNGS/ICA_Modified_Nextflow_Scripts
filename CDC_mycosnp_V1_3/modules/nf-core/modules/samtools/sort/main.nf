@@ -2,11 +2,12 @@ process SAMTOOLS_SORT {
     tag "$meta.id"
     label 'process_medium'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+
+    cpus   = { 6 }
+    memory = { 28.GB }
 
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

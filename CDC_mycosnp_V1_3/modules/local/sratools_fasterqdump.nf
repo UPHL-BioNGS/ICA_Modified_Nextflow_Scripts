@@ -2,6 +2,8 @@ process SRATOOLS_FASTERQDUMP {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? 'bioconda::sra-tools=2.11.0 conda-forge::pigz=2.6' : null)
@@ -22,9 +24,8 @@ process SRATOOLS_FASTERQDUMP {
                     ]
                 ]
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     input:
     tuple val(meta), path(sra)

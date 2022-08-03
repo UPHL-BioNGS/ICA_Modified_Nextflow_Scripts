@@ -2,6 +2,8 @@ process PICARD_FIXMATEINFORMATION {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::picard=2.26.9" : null)
@@ -13,9 +15,9 @@ process PICARD_FIXMATEINFORMATION {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 8 }
-    memory = { 32.GB }
-    time   = { 24.h  }
+    cpus   = { 6 }
+    memory = { 28.GB }
+
 
     ext.args         = { "" }
     ext.prefix         = { "${meta.id}_fixmate"}

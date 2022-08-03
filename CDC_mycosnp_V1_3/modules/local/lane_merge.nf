@@ -2,6 +2,11 @@ process LANE_MERGE {
 
     tag "$meta.id"
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    cpus   = { 1 }
+    memory = { 6.GB }
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
 
     input:

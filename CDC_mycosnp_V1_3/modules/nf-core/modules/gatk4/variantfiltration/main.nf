@@ -2,6 +2,8 @@ process GATK4_VARIANTFILTRATION {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
@@ -23,8 +25,8 @@ process GATK4_VARIANTFILTRATION {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 8 }
-    memory = { 32.GB }
+    cpus   = { 6 }
+    memory = { 28.GB }
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)

@@ -1,7 +1,9 @@
 process CUSTOM_DUMPSOFTWAREVERSIONS {
     label 'process_low'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     // Requires `pyyaml` which does not have a dedicated container but is in the MultiQC container
     conda (params.enable_conda ? "bioconda::multiqc=1.11" : null)
@@ -9,9 +11,8 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
         'https://depot.galaxyproject.org/singularity/multiqc:1.11--pyhdfd78af_0' :
         'quay.io/biocontainers/multiqc:1.11--pyhdfd78af_0' }"
 
-    cpus   = { 2 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     publishDir = [
             path: { "${params.outdir}/pipeline_info" },

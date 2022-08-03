@@ -2,15 +2,16 @@ process VCF_QC {
     tag "vcf-qc"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'finish' }
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     ext.when         = {  }
     publishDir       = [

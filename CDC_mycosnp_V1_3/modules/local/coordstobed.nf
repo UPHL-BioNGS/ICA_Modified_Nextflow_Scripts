@@ -2,7 +2,9 @@ process COORDSTOBED {
     tag "$meta.id"
     label 'process_low'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small' 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? "bioconda::mummer=3.23" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -20,9 +22,9 @@ process COORDSTOBED {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 2 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
+
 
     input:
     tuple val(meta), path(delta)

@@ -2,6 +2,8 @@ process QC_REPORT {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
 
     conda (params.enable_conda ? "bioconda::pandas=1.1.5" : null)
@@ -13,9 +15,8 @@ process QC_REPORT {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 2 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 1 }
+    memory = { 6.GB }
 
     ext.args         = { "" }
     ext.when         = {  }

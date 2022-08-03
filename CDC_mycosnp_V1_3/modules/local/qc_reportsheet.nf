@@ -1,6 +1,8 @@
 process QC_REPORTSHEET {
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     ext.when         = {  }
@@ -12,9 +14,8 @@ process QC_REPORTSHEET {
             saveAs: { filename -> filename.equals('versions.yml') ? null : filename }
         ]
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     input:
     path(qc_lines)

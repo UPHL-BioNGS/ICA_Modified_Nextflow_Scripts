@@ -2,6 +2,8 @@ process PICARD_MARKDUPLICATES {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::picard=2.26.10" : null)
@@ -14,8 +16,7 @@ process PICARD_MARKDUPLICATES {
     maxErrors     = '-1'
 
     cpus   = { 6 }
-    memory = { 32.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
 
     ext.args         = { "REMOVE_DUPLICATES=true ASSUME_SORT_ORDER=coordinate VALIDATION_STRINGENCY=LENIENT" }
         //ext.args         = { "-REMOVE_DUPLICATES \"true\" -ASSUME_SORT_ORDER \"coordinate\" -VALIDATION_STRINGENCY \"LENIENT\" " }

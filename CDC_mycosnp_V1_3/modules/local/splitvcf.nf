@@ -2,7 +2,9 @@ process SPLIT_VCF {
     tag "$meta.id"
     label 'process_medium'
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? 'bioconda::bcftools=1.14' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,9 +15,8 @@ process SPLIT_VCF {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 6 }
+    memory = { 28.GB }
 
     ext.args         = { }
     ext.when         = {  }

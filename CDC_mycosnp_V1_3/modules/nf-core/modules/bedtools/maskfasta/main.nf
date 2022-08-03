@@ -2,6 +2,8 @@ process BEDTOOLS_MASKFASTA {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
@@ -18,8 +20,7 @@ process BEDTOOLS_MASKFASTA {
             ]
 
     cpus   = { 6 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    memory = { 28.GB }
 
     errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'finish' }
     maxRetries    = 1

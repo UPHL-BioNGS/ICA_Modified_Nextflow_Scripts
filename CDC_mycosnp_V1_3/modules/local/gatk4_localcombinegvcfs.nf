@@ -2,6 +2,8 @@ process GATK4_LOCALCOMBINEGVCFS {
     tag "combined"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
@@ -19,9 +21,9 @@ process GATK4_LOCALCOMBINEGVCFS {
                 pattern: "*{vcf.gz,vcf.gz.tbi}"
             ]
 
-    cpus   = { 8 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 6 }
+    memory = { 28.GB }
+
 
     errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'finish' }
     maxRetries    = 1

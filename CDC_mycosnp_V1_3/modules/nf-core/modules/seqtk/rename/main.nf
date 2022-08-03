@@ -2,11 +2,13 @@ process SEQTK_RENAME {
     tag "$meta.id"
     label 'process_low'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
-    cpus   = { 4 }
-    memory = { 20.GB }
-    time   = { 24.h  }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

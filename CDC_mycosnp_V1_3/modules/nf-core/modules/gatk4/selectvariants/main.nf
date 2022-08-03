@@ -2,6 +2,8 @@ process GATK4_SELECTVARIANTS {
     tag "$meta.id"
     label 'process_medium'
 
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
@@ -13,8 +15,8 @@ process GATK4_SELECTVARIANTS {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 8 }
-    memory = { 32.GB }
+    cpus   = { 6 }
+    memory = { 28.GB }
 
     ext.args         = { '--select-type-to-include "SNP"' }
     ext.when         = {  }
