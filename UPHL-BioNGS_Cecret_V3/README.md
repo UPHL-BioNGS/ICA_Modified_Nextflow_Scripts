@@ -1,6 +1,8 @@
 # UPHL-BioNGS_Cecret_V3
 Source Git Repository: https://github.com/UPHL-BioNGS/Cecret
 
+Github Version: 3.0.20220520
+
 By: [@erinyoung](https://github.com/erinyoung)
 
 In order for this pipeline to run successfully you must provide the following files which are labeled with their associated fields in the XML:
