@@ -2,6 +2,8 @@
 
 Source Git Repository: https://github.com/UPHL-BioNGS/Donut_Falls
 
+Github Version: 0.0.20220810
+
 By: [@erinyoung](https://github.com/erinyoung)
 
 In order for this pipeline to run successfully you must provide the following files which are labeled with their associated fields in the XML:
