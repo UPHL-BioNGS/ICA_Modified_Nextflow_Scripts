@@ -1,6 +1,8 @@
 process SAMPLESHEET_MERGE {
     tag "$samplesheet"
 
+    maxForks 1
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}

@@ -3,6 +3,8 @@ process SAMPLESHEET_CHECK {
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
+    maxForks 1
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
 
     conda (params.enable_conda ? "conda-forge::python=3.8.3" : null)

@@ -2,16 +2,18 @@ process SEQTK_SAMPLE {
     tag "$meta.id"
     label 'process_low'
 
+    maxForks 7
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
 
     errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'finish' }
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 6 }
-    memory = { 28.GB }
+    cpus   = { 14 }
+    memory = { 58.GB }
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

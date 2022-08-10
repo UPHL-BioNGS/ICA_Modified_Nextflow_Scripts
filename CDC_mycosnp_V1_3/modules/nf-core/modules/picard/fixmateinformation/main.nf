@@ -2,6 +2,8 @@ process PICARD_FIXMATEINFORMATION {
     tag "$meta.id"
     label 'process_low'
 
+    maxForks 5
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'

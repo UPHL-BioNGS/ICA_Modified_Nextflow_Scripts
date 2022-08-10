@@ -2,6 +2,8 @@ process IQTREE {
     tag "$alignment"
     label 'process_medium'
 
+    maxForks 5
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'

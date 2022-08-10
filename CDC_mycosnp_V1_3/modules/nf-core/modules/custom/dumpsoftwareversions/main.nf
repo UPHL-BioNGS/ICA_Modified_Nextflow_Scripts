@@ -1,6 +1,8 @@
 process CUSTOM_DUMPSOFTWAREVERSIONS {
     label 'process_low'
 
+    maxForks 1
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'

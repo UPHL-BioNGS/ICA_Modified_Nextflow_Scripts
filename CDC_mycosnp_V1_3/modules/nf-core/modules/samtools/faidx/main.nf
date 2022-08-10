@@ -2,9 +2,11 @@ process SAMTOOLS_FAIDX {
     tag "$fasta"
     label 'process_low'
 
+    maxForks 5
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -24,8 +26,8 @@ process SAMTOOLS_FAIDX {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 3 }
-    memory = { 14.GB }
+    cpus   = { 6 }
+    memory = { 28.GB }
 
     input:
     tuple val(meta), path(fasta)

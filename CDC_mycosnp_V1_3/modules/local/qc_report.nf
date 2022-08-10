@@ -2,9 +2,11 @@ process QC_REPORT {
     tag "$meta.id"
     label 'process_low'
 
+    maxForks 1
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? "bioconda::pandas=1.1.5" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -15,8 +17,8 @@ process QC_REPORT {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 1 }
-    memory = { 6.GB }
+    cpus   = { 3 }
+    memory = { 14.GB }
 
     ext.args         = { "" }
     ext.when         = {  }

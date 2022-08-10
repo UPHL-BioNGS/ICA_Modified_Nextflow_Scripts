@@ -2,9 +2,11 @@ process PICARD_ADDORREPLACEREADGROUPS {
     tag "$meta.id"
     label 'process_low'
 
+    maxForks 5
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::picard=2.26.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -15,8 +17,8 @@ process PICARD_ADDORREPLACEREADGROUPS {
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 3 }
-    memory = { 14.GB }
+    cpus   = { 6 }
+    memory = { 28.GB }
 
     ext.args         = { "" }
     ext.prefix       = { "${meta.id}"}

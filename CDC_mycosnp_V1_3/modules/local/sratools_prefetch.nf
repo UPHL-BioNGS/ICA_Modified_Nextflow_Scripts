@@ -3,6 +3,8 @@ process SRATOOLS_PREFETCH {
     label 'process_low'
     label 'error_retry'
 
+    maxForks 2
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? 'bioconda::sra-tools=2.11.0' : null)

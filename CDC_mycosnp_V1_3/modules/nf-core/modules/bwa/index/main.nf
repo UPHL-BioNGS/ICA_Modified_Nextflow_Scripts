@@ -2,6 +2,8 @@ process BWA_INDEX {
     tag "$fasta"
     label 'process_high'
 
+    maxForks 7
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'

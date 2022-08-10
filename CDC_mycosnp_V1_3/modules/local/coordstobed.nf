@@ -2,6 +2,8 @@ process COORDSTOBED {
     tag "$meta.id"
     label 'process_low'
 
+    maxForks 2
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'

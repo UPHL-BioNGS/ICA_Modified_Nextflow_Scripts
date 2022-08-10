@@ -2,6 +2,8 @@ process GATK4_HAPLOTYPECALLER {
     tag "$meta.id"
     label 'process_medium'
 
+    maxForks 7
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'

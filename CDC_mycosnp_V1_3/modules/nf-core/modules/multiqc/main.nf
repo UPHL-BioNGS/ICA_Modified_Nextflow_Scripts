@@ -1,6 +1,8 @@
 process MULTIQC {
     label 'process_medium'
 
+    maxForks 5
+
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}

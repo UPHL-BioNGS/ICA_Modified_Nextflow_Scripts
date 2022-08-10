@@ -2,6 +2,8 @@ process LANE_MERGE {
 
     tag "$meta.id"
 
+    maxForks 1
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     cpus   = { 1 }

@@ -3,6 +3,8 @@ def VERSION = '2.3.2' // Version information not provided by tool on CLI
 process RAPIDNJ {
     label 'process_medium'
 
+    maxForks 5
+
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
