@@ -1,10 +1,11 @@
 process lyveset_shuffle {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2
-  container  'staphb/lyveset:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/lyveset:2.0.1'
+  // there is no way to designate cpu, but seems to use more than 1
+  cpus          2
 
   input:
   tuple val(sample), file(reads)
@@ -30,14 +31,12 @@ process lyveset_shuffle {
 }
 
 process lyveset_cg_pipeline {
-  tag "${sample}"
-  label "medcpus"
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/lyveset:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/lyveset:2.0.1'
+  cpus          3
 
   input:
   tuple val(sample), file(fastq), val(mash), val(genus), val(species), file(genome_file)

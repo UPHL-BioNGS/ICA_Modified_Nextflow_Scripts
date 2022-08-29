@@ -1,11 +1,12 @@
 process fastani {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'himem-medium'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  // himem-medium has 16 CPU and 128 G memory
-  cpus 16
-  container  'staphb/fastani:1.33'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  // given 4 CPUs, uses 2 CPUs and 1.5GB memory
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          3
+  memory        12.GB
+  container     'staphb/fastani:1.33'
 
   input:
   tuple val(sample), file(contigs), file(genomes)

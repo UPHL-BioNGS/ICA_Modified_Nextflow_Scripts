@@ -1,10 +1,9 @@
 process plasmidfinder {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2
-  container 'staphb/plasmidfinder:2.1.6'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/plasmidfinder:2.1.6'
 
   input:
   tuple val(sample), file(file)

@@ -1,16 +1,16 @@
 process bwa {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 4
-  container  'staphb/bwa:0.7.17'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          3
+  container     'staphb/bwa:0.7.17'
 
   input:
   tuple val(sample), file(reads), file(contig)
 
   output:
-  tuple val(sample), file("bwa/${sample}.sam")             , emit: sam
+  tuple val(sample), file("bwa/${sample}.sam")                         , emit: sam
   path "logs/${task.process}/${sample}.${workflow.sessionId}.{log,err}", emit: log
 
   shell:

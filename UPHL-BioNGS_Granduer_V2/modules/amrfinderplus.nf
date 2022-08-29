@@ -1,10 +1,10 @@
 process amrfinderplus {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 4
-  container 'staphb/ncbi-amrfinderplus:3.10.36'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          3
+  container     'staphb/ncbi-amrfinderplus:3.10.36'
 
   input:
   tuple val(sample), file(contigs), val(genus), val(species)

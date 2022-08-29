@@ -1,13 +1,14 @@
 process kraken2_fastq {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  container 'staphb/kraken2:2.1.2-no-db'
-  cpus  16
-  memory  32.GB
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/kraken2:2.1.2-no-db'
+  // given 12 cpus, it uses up to 14 cpus and 8.2G memory
+  cpus          12
+  memory        26.GB
   // for something that takes ~5 min... it's very suspicous that this needs a timeout
-  time  2.h
+  time          2.h
 
   input:
   tuple val(sample), file(file), path(kraken2_db)
@@ -50,15 +51,14 @@ process kraken2_fastq {
 }
 
 process kraken2_fasta {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  container 'staphb/kraken2:2.1.2-no-db'
-  cpus  16
-  memory  32.GB
-  // for something that takes ~5 min... it's very suspicous that this needs a timeout
-  time  2.h
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/kraken2:2.1.2-no-db'
+  cpus          12
+  memory        26.GB
+  time          2.h
 
   input:
   tuple val(sample), file(file), path(kraken2_db)

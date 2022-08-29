@@ -1,10 +1,10 @@
 process sort {
-  tag "${sample}"
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 4
-  container  'staphb/samtools:1.16'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          3
+  container     'staphb/samtools:1.16'
 
   input:
   tuple val(sample), file(sam)

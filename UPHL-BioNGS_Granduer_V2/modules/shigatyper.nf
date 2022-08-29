@@ -1,10 +1,9 @@
 process shigatyper {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2
-  container 'staphb/shigatyper:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/shigatyper:2.0.1'
 
   when:
   flag =~ 'found'

@@ -1,11 +1,11 @@
 process spades {
-  tag "${sample}"
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-medium'
-  // for spades, 12 CPUs is the point of diminishing returns
-  errorStrategy { task.exitStatus == 21 ? 'ignore' : 'terminate' }
-  publishDir "grandeur", mode: 'copy'
-  cpus 16
-  container 'staphb/spades:3.15.5'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
+  // for spades, 12 CPUs is the point of diminishing returns. Uses up to 10G memory with 12 CPUs
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          12
+  container     'staphb/spades:3.15.5'
 
   input:
   tuple val(sample), file(reads)

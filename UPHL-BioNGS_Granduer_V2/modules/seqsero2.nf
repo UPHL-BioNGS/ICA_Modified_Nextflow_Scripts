@@ -1,10 +1,10 @@
 process seqsero2_fastq {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 4
-  container  'staphb/seqsero2:1.2.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          3
+  container     'staphb/seqsero2:1.2.1'
 
   when:
   flag =~ 'found'
@@ -62,12 +62,12 @@ process seqsero2_fastq {
 }
 
 process seqsero2_fasta {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 4
-  container  'staphb/seqsero2:1.2.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          3
+  container     'staphb/seqsero2:1.2.1'
 
   when:
   flag =~ 'found'

@@ -1,10 +1,10 @@
 process serotypefinder_fastq {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 4
-  container 'staphb/serotypefinder:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          3
+  container     'staphb/serotypefinder:2.0.1'
 
   when:
   flag =~ 'found'
@@ -13,7 +13,7 @@ process serotypefinder_fastq {
   tuple val(sample), file(file), val(flag)
 
   output:
-  path "serotypefinder/${sample}/*"                                    , emit: files
+  path "serotypefinder/${sample}/*"                                     , emit: files
   tuple val(sample), env(o_type)                                        , emit: ogroup
   tuple val(sample), env(h_type)                                        , emit: hgroup
   path "logs/${task.process}/${sample}.${workflow.sessionId}.{log,err}" , emit:  log
@@ -44,12 +44,12 @@ process serotypefinder_fastq {
 }
 
 process serotypefinder_fasta {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 4
-  container 'staphb/serotypefinder:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          3
+  container     'staphb/serotypefinder:2.0.1'
 
   when:
   flag =~ 'found'
@@ -58,7 +58,7 @@ process serotypefinder_fasta {
   tuple val(sample), file(file), val(flag)
 
   output:
-  path "serotypefinder/${sample}/*"                                    , emit: files
+  path "serotypefinder/${sample}/*"                                     , emit: files
   tuple val(sample), env(o_type)                                        , emit: ogroup
   tuple val(sample), env(h_type)                                        , emit: hgroup
   path "logs/${task.process}/${sample}.${workflow.sessionId}.{log,err}" , emit:  log

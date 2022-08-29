@@ -1,10 +1,9 @@
 process mlst {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2  
-  container 'staphb/mlst:2.22.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/mlst:2.22.1'
 
   input:
   tuple val(sample), file(contig)

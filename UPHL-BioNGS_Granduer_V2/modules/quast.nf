@@ -1,10 +1,9 @@
 process quast {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2
-  container 'staphb/quast:5.0.2'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/quast:5.0.2'
 
   input:
   tuple val(sample), file(contigs)

@@ -1,10 +1,9 @@
 process multiqc {
-  tag "multiqc"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2
-  container  'quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0'
+  tag           "multiqc"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0'
 
   input:
   file(fastp)

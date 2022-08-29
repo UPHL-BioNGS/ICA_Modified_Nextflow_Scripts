@@ -1,10 +1,9 @@
 process blobtools_create {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2
-  container 'chrishah/blobtools:v1.1.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'chrishah/blobtools:v1.1.1'
 
   input:
   tuple val(sample), file(contig), file(blastn), file(bam)
@@ -37,12 +36,11 @@ process blobtools_create {
 }
 
 process blobtools_view {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2
-  container 'chrishah/blobtools:v1.1.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'chrishah/blobtools:v1.1.1'
 
   input:
   tuple val(sample), file(json)
@@ -72,12 +70,11 @@ process blobtools_view {
 }
 
 process blobtools_blobtools {
-  tag "${sample}"
-  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
-  errorStrategy 'ignore'
-  publishDir "grandeur", mode: 'copy'
-  cpus 2
-  container 'chrishah/blobtools:v1.1.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 3 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'chrishah/blobtools:v1.1.1'
 
   input:
   tuple val(sample), file(json)
