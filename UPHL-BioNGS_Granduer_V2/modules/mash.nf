@@ -1,16 +1,10 @@
 process mash_sketch {
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
   container 'staphb/mash:2.3'
-
-  when:
-  params.fastq_processes =~ /mash/
 
   input:
   tuple val(sample), file(reads)
@@ -46,16 +40,11 @@ process mash_sketch {
 
 process mash_dist {
   tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy 'ignore'
+  publishDir "grandeur", mode: 'copy'
+  cpus 4
   container 'staphb/mash:2.3'
-
-  when:
-  params.fastq_processes =~ /mash/ || params.contig_processes =~ /mash/
 
   input:
   tuple val(sample), file(msh)

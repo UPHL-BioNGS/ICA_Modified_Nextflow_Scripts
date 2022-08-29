@@ -1,16 +1,10 @@
 process mlst {
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container   'staphb/mlst:2.22.0'
-
-  when:
-  params.contig_processes =~ /mlst/
+  publishDir "grandeur", mode: 'copy'
+  cpus 2  
+  container 'staphb/mlst:2.22.1'
 
   input:
   tuple val(sample), file(contig)

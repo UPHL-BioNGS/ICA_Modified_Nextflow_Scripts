@@ -1,17 +1,13 @@
 process kleborate {
   tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/kleborate:2.1.0'
+  publishDir "grandeur", mode: 'copy'
+  cpus 4
+  container  'staphb/kleborate:2.2.0'
 
   when:
-  params.contig_processes =~ /kleborate/ && flag =~ 'found'
+  flag =~ 'found'
 
   input:
   tuple val(sample), file(contig), val(flag)

@@ -1,16 +1,10 @@
 process multiqc {
   tag "multiqc"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
   container  'quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0'
-
-  when:
-  params.fastq_processes =~ /multiqc/ || params.contig_processes =~ /multiqc/ || params.phylogenetic_processes =~ /multiqc/
 
   input:
   file(fastp)

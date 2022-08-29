@@ -3,17 +3,10 @@
 println("Currently using the Grandeur workflow for use with microbial sequencing. The view is great from 8299 feet (2530 meters) above sea level.\n")
 println("Author: Erin Young")
 println("email: eriny@utah.gov")
-println("Version: v2.0.20220610")
+println("Version: v2.0.20220829ICA")
 println("")
 
 nextflow.enable.dsl               = 2
-
-params.prokka        = true
-params.blobtools     = true
-
-params.outdir                     = workflow.launchDir + '/out/grandeur'
-params.maxcpus                    = 16
-params.medcpus                    = 8
 
 // core workflow of fastq to contig
 params.fastp_options              = "--detect_adapter_for_pe"
@@ -21,7 +14,6 @@ params.bbduk_options              = "k=31 hdist=1"
 params.spades_options             = '--isolate'
 
 // fastq information
-params.fastq_processes            = ['fastp', 'bbduk', 'spades', 'fastqc', 'cg_pipeline', 'mash', 'kraken2', 'summary', 'multiqc', 'shigatyper']
 params.fastqc_options             = ''
 params.cg_pipeline_options        = '--qual_offset 33 --minLength 1'
 params.shigatyper_options         = ''
@@ -36,7 +28,6 @@ params.mash_options               = '-v 0 -d 0.5'
 // params.serotypefinder_options  = ''
 
 // contig information
-params.contig_processes           = ['amrfinderplus', 'kleborate', 'fastani', 'mlst', 'quast', 'serotypefinder', 'blobtools', 'summary', 'multiqc', 'plasmidfinder', 'seqsero2', 'kraken2', 'mash']
 params.amrfinderplus_options      = ''
 params.fastani_options            = ''
 params.kleborate_options          = '-all'
@@ -58,14 +49,6 @@ params.samtools_sort_options      = ''
 
 // summary
 params.multiqc_options            = ''
-
-// phylogenetic analysis
-params.phylogenetic_processes     = []
-params.iqtree2_options            = '-t RANDOM -m GTR+F+I -bb 1000 -alrt 1000'
-params.outgroup                   = ''
-params.prokka_options             = '--mincontiglen 500 --compliant --locustag locus_tag --centre STAPHB'
-params.roary_options              = ''
-params.snp_dists_options          = '-c'
 
 include { de_novo_alignment }     from './subworkflows/de_novo_alignment.nf'     addParams( outdir:                     params.outdir,
                                                                                             fastq_processes:            params.fastq_processes,
@@ -100,32 +83,14 @@ include { blobtools }             from './subworkflows/blobtools.nf'            
                                                                                             blobtools_plot_options:     params.blobtools_plot_options,
                                                                                             bwa_options:                params.bwa_options,
                                                                                             samtools_sort_options:      params.samtools_sort_options)
-include { phylogenetic_analysis } from './subworkflows/phylogenetic_analysis.nf' addParams( outdir:                     params.outdir,
-                                                                                            phylogenetic_processes:     params.phylogenetic_processes,
-                                                                                            iqtree2_options:            params.iqtree2_options,
-                                                                                            outgroup:                   params.outgroup,
-                                                                                            prokka_options:             params.prokka_options,
-                                                                                            roary_options:              params.roary_options,
-                                                                                            snp_dists_options:          params.snp_dists_options)
 include { mash_dist as mash }     from './modules/mash'                          addParams( fastq_processes:            params.fastq_processes,
                                                                                             mash_reference:             params.mash_reference,
                                                                                             mash_options:               params.mash_options)
 include { summary }               from './modules/summary'                       addParams( fastq_processes:            params.fastq_processes,
-                                                                                            contig_processes:           params.contig_processes,
-                                                                                            phylogenetic_processes:     params.phylogenetic_processes)
+                                                                                            contig_processes:           params.contig_processes)
 include { multiqc }               from './modules/multiqc'                       addParams( multiqc_options:            params.multiqc_options,
                                                                                             fastq_processes:            params.fastq_processes,
-                                                                                            contig_processes:           params.contig_processes,
-                                                                                            phylogenetic_processes:     params.phylogenetic_processes)
-
-// TODO : frp_plasmid
-// TODO : pointfinder
-// TODO : mubsuite
-// TODO : sistr
-// TODO : plasmidseeker
-// TODO : socru?
-// TODO : kaptive
-// TODO : ngmaster
+                                                                                            contig_processes:           params.contig_processes)
 
 // Getting the fastq files
 params.reads = workflow.launchDir + '/reads'
@@ -208,16 +173,13 @@ workflow {
 
   contig_information(contigs, mash_species, mash_genus, salmonella_flag, ecoli_flag, klebsiella_flag, fastani_genomes, local_kraken2)
 
-  phylogenetic_analysis(contigs, mash_species, mash_genus, gffs )
-
   multiqc(de_novo_alignment.out.fastp_multiqc.collect().ifEmpty([]),
           de_novo_alignment.out.bbduk_multiqc.collect().ifEmpty([]),
           contig_information.out.kraken2_multiqc.collect().ifEmpty([]),
           contig_information.out.quast_multiqc.collect().ifEmpty([]),
           fastq_information.out.fastqc_multiqc.collect().ifEmpty([]),
-          fastq_information.out.kraken2_multiqc.collect().ifEmpty([]),
-          phylogenetic_analysis.out.prokka_multiqc.collect().ifEmpty([]))
-
+          fastq_information.out.kraken2_multiqc.collect().ifEmpty([]))
+  
   reads
     .mix(fastas)
     // de_novo_alignment

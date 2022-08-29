@@ -1,14 +1,10 @@
 process blastn {
   tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  //errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'ncbi/blast:2.13.0'
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy 'ignore'
+  publishDir "grandeur", mode: 'copy'
+  cpus 4
+  container 'staphb/blast:2.13.0'
 
   input:
   tuple val(sample), file(contig), path(blastdb)

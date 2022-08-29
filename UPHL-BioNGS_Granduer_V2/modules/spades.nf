@@ -1,17 +1,11 @@
 process spades {
   tag "${sample}"
-  label "maxcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
-  
+  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-medium'
+  // for spades, 12 CPUs is the point of diminishing returns
   errorStrategy { task.exitStatus == 21 ? 'ignore' : 'terminate' }
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/spades:3.15.4'
-
-  when:
-  params.fastq_processes =~ /spades/
+  publishDir "grandeur", mode: 'copy'
+  cpus 16
+  container 'staphb/spades:3.15.5'
 
   input:
   tuple val(sample), file(reads)

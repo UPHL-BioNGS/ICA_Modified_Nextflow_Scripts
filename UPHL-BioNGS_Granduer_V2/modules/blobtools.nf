@@ -1,12 +1,9 @@
 process blobtools_create {
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
   container 'chrishah/blobtools:v1.1.1'
 
   input:
@@ -41,13 +38,10 @@ process blobtools_create {
 
 process blobtools_view {
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
   container 'chrishah/blobtools:v1.1.1'
 
   input:
@@ -79,13 +73,10 @@ process blobtools_view {
 
 process blobtools_blobtools {
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
   container 'chrishah/blobtools:v1.1.1'
 
   input:

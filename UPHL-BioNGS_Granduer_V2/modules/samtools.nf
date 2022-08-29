@@ -1,14 +1,10 @@
 process sort {
   tag "${sample}"
-  label "medcpus"
-
   pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/samtools:1.15'
+  publishDir "grandeur", mode: 'copy'
+  cpus 4
+  container  'staphb/samtools:1.16'
 
   input:
   tuple val(sample), file(sam)

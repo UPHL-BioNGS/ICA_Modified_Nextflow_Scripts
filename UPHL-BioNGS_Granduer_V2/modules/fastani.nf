@@ -1,17 +1,11 @@
 process fastani {
   tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'himem-medium'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  // himem-medium has 16 CPU and 128 G memory
+  cpus 16
   container  'staphb/fastani:1.33'
-
-  when:
-  params.contig_processes =~ /fastani/
 
   input:
   tuple val(sample), file(contigs), file(genomes)

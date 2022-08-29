@@ -1,17 +1,10 @@
 process amrfinderplus {
   tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/ncbi-amrfinderplus:3.10.24'
-
-  when:
-  params.contig_processes =~ /amrfinderplus/
+  publishDir "grandeur", mode: 'copy'
+  cpus 4
+  container 'staphb/ncbi-amrfinderplus:3.10.36'
 
   input:
   tuple val(sample), file(contigs), val(genus), val(species)

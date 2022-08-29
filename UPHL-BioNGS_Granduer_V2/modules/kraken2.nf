@@ -1,21 +1,13 @@
 process kraken2_fastq {
   tag "${sample}"
-  label "maxcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
   container 'staphb/kraken2:2.1.2-no-db'
-
-  cpus   = { 16 }
-  memory = { 30.GB }
-  time   = { 24.h  }
-
-  when:
-  params.fastq_processes =~ /kraken2/
+  cpus  16
+  memory  32.GB
+  // for something that takes ~5 min... it's very suspicous that this needs a timeout
+  time  2.h
 
   input:
   tuple val(sample), file(file), path(kraken2_db)
@@ -59,20 +51,14 @@ process kraken2_fastq {
 
 process kraken2_fasta {
   tag "${sample}"
-  label "maxcpus"
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
   container 'staphb/kraken2:2.1.2-no-db'
-
-  cpus   = { 16 }
-  memory = { 30.GB }
-  time   = { 24.h  }
-
-  when:
-  params.contig_processes =~ /kraken2/
+  cpus  16
+  memory  32.GB
+  // for something that takes ~5 min... it's very suspicous that this needs a timeout
+  time  2.h
 
   input:
   tuple val(sample), file(file), path(kraken2_db)

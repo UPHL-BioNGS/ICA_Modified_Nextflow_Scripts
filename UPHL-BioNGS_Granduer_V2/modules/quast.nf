@@ -1,16 +1,10 @@
 process quast {
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
   container 'staphb/quast:5.0.2'
-
-  when:
-  params.contig_processes =~ /quast/
 
   input:
   tuple val(sample), file(contigs)

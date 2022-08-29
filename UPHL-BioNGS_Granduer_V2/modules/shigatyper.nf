@@ -1,17 +1,13 @@
 process shigatyper {
   tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'quay.io/uphl/shigatyper:latest'
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
+  container 'staphb/shigatyper:2.0.1'
 
   when:
-  params.fastq_processes =~ /shigatyper/ && flag =~ 'found'
+  flag =~ 'found'
 
   input:
   tuple val(sample), file(fastq), val(flag)

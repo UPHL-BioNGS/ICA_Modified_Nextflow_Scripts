@@ -1,16 +1,10 @@
 process fastqc {
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
   container  'staphb/fastqc:0.11.9'
-
-  when:
-  params.fastq_processes =~ /fastqc/
 
   input:
   tuple val(sample), file(raw)

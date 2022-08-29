@@ -1,16 +1,10 @@
 process lyveset_shuffle {
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-small'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
+  publishDir "grandeur", mode: 'copy'
+  cpus 2
   container  'staphb/lyveset:2.0.1'
-
-  when:
-  params.fastq_processes =~ /cg_pipeline/
 
   input:
   tuple val(sample), file(reads)

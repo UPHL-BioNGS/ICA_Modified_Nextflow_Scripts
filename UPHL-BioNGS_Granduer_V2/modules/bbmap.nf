@@ -1,13 +1,10 @@
 process bbduk{
   tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
+  pod annotation 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
   errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/bbtools:38.96'
+  publishDir "grandeur", mode: 'copy'
+  cpus 4
+  container  'staphb/bbtools:38.98'
 
   input:
   tuple val(sample), file(reads)
