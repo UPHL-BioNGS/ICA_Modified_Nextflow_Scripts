@@ -3,9 +3,11 @@ process SAMPLESHEET_CHECK {
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    maxForks 1
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     conda (params.enable_conda ? "conda-forge::python=3.8.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -17,9 +19,6 @@ process SAMPLESHEET_CHECK {
                 mode: "${params.publish_dir_mode}",
                 saveAs: { filename -> filename.equals('versions.yml') ? null : filename }
             ]
-
-    cpus   = { 1 }
-    memory = { 6.GB }
 
     input:
     path samplesheet

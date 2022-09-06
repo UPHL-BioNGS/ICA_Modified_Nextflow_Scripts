@@ -1,11 +1,13 @@
 process QC_REPORTSHEET {
     label 'process_low'
 
-    maxForks 1
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     ext.when         = {  }
     publishDir       = [
@@ -15,9 +17,6 @@ process QC_REPORTSHEET {
             pattern: "*",
             saveAs: { filename -> filename.equals('versions.yml') ? null : filename }
         ]
-
-    cpus   = { 3 }
-    memory = { 14.GB }
 
     input:
     path(qc_lines)

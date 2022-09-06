@@ -2,14 +2,13 @@ process DOWNSAMPLE_RATE {
     tag "$meta.id"
     label 'process_low'
 
-    maxForks 2
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-    cpus   = { 3 }
-    memory = { 14.GB }
 
     input:
     tuple val(meta), path(reads)

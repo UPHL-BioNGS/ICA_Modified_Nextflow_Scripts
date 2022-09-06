@@ -2,15 +2,14 @@ process SEQTK_SEQ {
     tag "$meta.id"
     label 'process_low'
 
-    maxForks 5
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
-
-    cpus   = { 6 }
-    memory = { 28.GB }
-    time   = { 24.h  }
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

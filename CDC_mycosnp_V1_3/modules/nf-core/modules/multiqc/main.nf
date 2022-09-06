@@ -1,14 +1,14 @@
 process MULTIQC {
     label 'process_medium'
 
-    maxForks 5
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    cpus   = { 6 }
-    memory = { 28.GB }
 
     conda (params.enable_conda ? 'bioconda::multiqc=1.11' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

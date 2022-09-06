@@ -2,19 +2,18 @@ process IQTREE {
     tag "$alignment"
     label 'process_medium'
 
-    maxForks 5
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? 'bioconda::iqtree=2.1.4_beta' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/iqtree:2.1.4_beta--hdcc8f71_0' :
         'quay.io/biocontainers/iqtree:2.1.4_beta--hdcc8f71_0' }"
-
-    cpus   = { 6 }
-    memory = { 28.GB }
 
     ext.args         = { "-alrt 1000 -B 1000 -m MFP -czb" }
     ext.errorStrategy = { "ignore" }

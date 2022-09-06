@@ -2,11 +2,13 @@ process SNPDISTS {
     tag "$meta.id"
     label 'process_low'
 
-    maxForks 5
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::snp-dists=0.8.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -23,8 +25,6 @@ process SNPDISTS {
                 pattern: "*.tsv"
             ]
 
-    cpus   = { 6 }
-    memory = { 28.GB }
 
     input:
     tuple val(meta), path(alignment)

@@ -2,11 +2,11 @@ process BWA_INDEX {
     tag "$fasta"
     label 'process_high'
 
-    maxForks 7
-
-    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -22,10 +22,7 @@ process BWA_INDEX {
                 pattern: "bwa"
             ]
 
-    cpus   = { 14 }
-    memory = { 56.GB }
-
-    errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'finish' }
+    errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'ignore' }
     maxRetries    = 1
     maxErrors     = '-1'
 

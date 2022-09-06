@@ -2,11 +2,13 @@ process FASTQC {
     tag "$meta.id"
     label 'process_medium'
 
-    maxForks 5
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::fastqc=0.11.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -23,10 +25,6 @@ process FASTQC {
                 pattern: "*",
                 saveAs: { filename -> filename.equals('versions.yml') ? null : filename }
             ]
-
-    cpus   = { 6 }
-    memory = { 28.GB }
-
 
     input:
     tuple val(meta), path(reads)

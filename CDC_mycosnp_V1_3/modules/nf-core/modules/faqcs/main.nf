@@ -2,11 +2,13 @@ process FAQCS {
     tag "$meta.id"
     label 'process_medium'
 
-    maxForks 7
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
 
     conda (params.enable_conda ? "bioconda::faqcs=2.10" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -24,10 +26,6 @@ process FAQCS {
 
     errorStrategy 'retry'
     maxRetries 10
-
-    cpus   = { 14 }
-    memory = { 58.GB }
-
 
     input:
     tuple val(meta), path(reads)

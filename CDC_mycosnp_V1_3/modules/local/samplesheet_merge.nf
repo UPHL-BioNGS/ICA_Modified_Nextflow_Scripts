@@ -1,9 +1,11 @@
 process SAMPLESHEET_MERGE {
     tag "$samplesheet"
 
-    maxForks 1
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-small'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
@@ -11,10 +13,6 @@ process SAMPLESHEET_MERGE {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/perl:5.22.2.1' :
         'quay.io/biocontainers/perl:5.22.2.1' }"
-
-
-        cpus   = { 1 }
-        memory = { 6.GB }
 
     input:
     path(samplesheet)

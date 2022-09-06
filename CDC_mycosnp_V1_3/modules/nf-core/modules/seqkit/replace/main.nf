@@ -2,11 +2,13 @@ process SEQKIT_REPLACE {
     tag "$meta.id"
     label 'process_low'
 
-    maxForks 5
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
 
     conda (params.enable_conda ? "bioconda::seqkit=2.1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -24,9 +26,6 @@ process SEQKIT_REPLACE {
                 path: { "${params.outdir}/combined/vcf-to-fasta" },
                 pattern: "vcf-to-fasta.fasta"
             ]
-
-    cpus   = { 6 }
-    memory = { 28.GB }
 
     input:
     tuple val(meta), path(fastx)
