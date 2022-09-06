@@ -2,11 +2,17 @@ process VCF_TO_FASTA {
     tag "${meta.id}"
     label 'process_low'
 
+<<<<<<< HEAD
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
     cpus 6
     memory '48 GB'
     time '1day'
     maxForks 10
+=======
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
 
     conda (params.enable_conda ? "bioconda::scipy=1.1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

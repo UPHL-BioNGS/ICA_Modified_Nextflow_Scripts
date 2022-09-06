@@ -2,6 +2,7 @@ process FAQCS {
     tag "$meta.id"
     label 'process_medium'
 
+<<<<<<< HEAD
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
     cpus 6
     memory '48 GB'
@@ -10,6 +11,12 @@ process FAQCS {
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
+=======
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     conda (params.enable_conda ? "bioconda::faqcs=2.10" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/faqcs%3A2.10--r41h9a82719_2' :
@@ -27,6 +34,13 @@ process FAQCS {
     errorStrategy 'retry'
     maxRetries 10
 
+<<<<<<< HEAD
+=======
+    cpus   = { 6 }
+    memory = { 28.GB }
+
+
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     input:
     tuple val(meta), path(reads)
 

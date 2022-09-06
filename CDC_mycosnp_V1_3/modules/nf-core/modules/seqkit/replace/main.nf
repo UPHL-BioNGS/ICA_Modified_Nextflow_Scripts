@@ -2,6 +2,7 @@ process SEQKIT_REPLACE {
     tag "$meta.id"
     label 'process_low'
 
+<<<<<<< HEAD
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
     cpus 6
     memory '48 GB'
@@ -10,6 +11,12 @@ process SEQKIT_REPLACE {
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
+=======
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     conda (params.enable_conda ? "bioconda::seqkit=2.1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.1.0--h9ee0642_0':
@@ -27,6 +34,12 @@ process SEQKIT_REPLACE {
                 pattern: "vcf-to-fasta.fasta"
             ]
 
+<<<<<<< HEAD
+=======
+    cpus   = { 3 }
+    memory = { 14.GB }
+
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     input:
     tuple val(meta), path(fastx)
 

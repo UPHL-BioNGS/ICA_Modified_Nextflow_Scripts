@@ -1,11 +1,17 @@
 process CUSTOM_DUMPSOFTWAREVERSIONS {
     label 'process_low'
 
+<<<<<<< HEAD
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
     cpus 6
     memory '48 GB'
     time '1day'
     maxForks 10
+=======
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
 
     // Requires `pyyaml` which does not have a dedicated container but is in the MultiQC container
     conda (params.enable_conda ? "bioconda::multiqc=1.11" : null)

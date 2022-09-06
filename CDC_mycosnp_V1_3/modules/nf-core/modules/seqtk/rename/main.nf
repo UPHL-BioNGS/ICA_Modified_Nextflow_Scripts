@@ -2,6 +2,7 @@ process SEQTK_RENAME {
     tag "$meta.id"
     label 'process_low'
 
+<<<<<<< HEAD
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
     cpus 6
     memory '48 GB'
@@ -10,6 +11,16 @@ process SEQTK_RENAME {
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
+=======
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
+
+
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+
+    cpus   = { 3 }
+    memory = { 14.GB }
+
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3' :

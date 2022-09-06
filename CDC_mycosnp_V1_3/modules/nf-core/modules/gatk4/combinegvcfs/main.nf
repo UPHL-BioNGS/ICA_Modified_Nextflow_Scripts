@@ -2,12 +2,15 @@ process GATK4_COMBINEGVCFS {
     tag "$meta.id"
     label 'process_low'
 
+<<<<<<< HEAD
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
     cpus 6
     memory '48 GB'
     time '1day'
     maxForks 10
 
+=======
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
