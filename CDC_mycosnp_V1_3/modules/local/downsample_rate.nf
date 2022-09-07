@@ -2,14 +2,16 @@ process DOWNSAMPLE_RATE {
     tag "$meta.id"
     label 'process_low'
 
-    maxForks 2
+<<<<<<< HEAD
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
+=======
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-    cpus   = { 3 }
-    memory = { 14.GB }
 
     input:
     tuple val(meta), path(reads)

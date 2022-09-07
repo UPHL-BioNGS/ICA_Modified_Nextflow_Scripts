@@ -2,14 +2,16 @@ process SAMTOOLS_SORT {
     tag "$meta.id"
     label 'process_medium'
 
-    maxForks 5
+<<<<<<< HEAD
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
+=======
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
-
-    cpus   = { 6 }
-    memory = { 28.GB }
 
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

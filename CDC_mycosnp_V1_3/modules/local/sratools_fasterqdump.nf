@@ -2,11 +2,16 @@ process SRATOOLS_FASTERQDUMP {
     tag "$meta.id"
     label 'process_medium'
 
-    maxForks 2
+<<<<<<< HEAD
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
+=======
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
     conda (params.enable_conda ? 'bioconda::sra-tools=2.11.0 conda-forge::pigz=2.6' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -25,9 +30,6 @@ process SRATOOLS_FASTERQDUMP {
                     pattern: "*.md5"
                     ]
                 ]
-
-    cpus   = { 3 }
-    memory = { 14.GB }
 
     input:
     tuple val(meta), path(sra)

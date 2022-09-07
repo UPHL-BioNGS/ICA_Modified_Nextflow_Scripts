@@ -2,15 +2,24 @@ process SAMTOOLS_INDEX {
     tag "$meta.id"
     label 'process_low'
 
-    maxForks 5
+<<<<<<< HEAD
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+=======
+    errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    cpus   = { 6 }
-    memory = { 28.GB }
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
 
+    cpus   = { 3 }
+    memory = { 14.GB }
+
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.14--hb421002_0' :

@@ -2,11 +2,17 @@ process SAMTOOLS_FAIDX {
     tag "$fasta"
     label 'process_low'
 
-    maxForks 5
-
+<<<<<<< HEAD
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
+=======
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
 
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -22,13 +28,16 @@ process SAMTOOLS_FAIDX {
                 pattern: "*fai"
             ]
 
-    errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'finish' }
+    errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'ignore' }
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 6 }
-    memory = { 28.GB }
+<<<<<<< HEAD
+=======
+    cpus   = { 3 }
+    memory = { 14.GB }
 
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     input:
     tuple val(meta), path(fasta)
 

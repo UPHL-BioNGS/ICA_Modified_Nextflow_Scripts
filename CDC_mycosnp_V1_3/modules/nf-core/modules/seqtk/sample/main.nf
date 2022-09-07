@@ -2,11 +2,17 @@ process SEQTK_SAMPLE {
     tag "$meta.id"
     label 'process_low'
 
-    maxForks 7
-
+<<<<<<< HEAD
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
+=======
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -22,12 +28,15 @@ process SEQTK_SAMPLE {
                 pattern: "*.fastq.gz"
             ]
 
-    errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'finish' }
+    errorStrategy = { task.exitStatus in [143,137,104,134,139] ? 'retry' : 'ignore' }
     maxRetries    = 1
     maxErrors     = '-1'
 
-    cpus   = { 14 }
-    memory = { 58.GB }
+<<<<<<< HEAD
+=======
+    cpus   = { 6 }
+    memory = { 28.GB }
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
 
     input:
     tuple val(meta), path(reads)

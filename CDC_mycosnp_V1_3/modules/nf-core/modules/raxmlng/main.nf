@@ -1,19 +1,21 @@
 process RAXMLNG {
     label 'process_high'
 
-    maxForks 6
+<<<<<<< HEAD
+    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
+    cpus 6
+    memory '48 GB'
+    time '1day'
+    maxForks 10
 
+=======
+>>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
-
-    pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-xlarge'
 
     conda (params.enable_conda ? 'bioconda::raxml-ng=1.0.3' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/raxml-ng:1.0.3--h32fcf60_0' :
         'quay.io/biocontainers/raxml-ng:1.0.3--h32fcf60_0' }"
-
-    cpus   = { 12 }
-    memory = { 56.GB }
 
     ext.args         = { "--all --model GTR+G --bs-trees 1000" }
     ext.errorStrategy = { "ignore" }
