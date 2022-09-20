@@ -38,15 +38,20 @@ workflow BWA_PREPROCESS {
     ch_alignment_index    = Channel.empty()
     ch_alignment_combined = Channel.empty()
     ch_seq_samplerate     = Channel.empty()
-    
+
 
     SEQKIT_PAIR(reads)
+    if (params.rate == 1) {
+    FAQCS(SEQKIT_PAIR.out.reads)
+    }
+    else {
     DOWNSAMPLE_RATE(SEQKIT_PAIR.out.reads, reference[0], params.coverage, params.rate)
 
     ch_seq_samplerate = SEQKIT_PAIR.out.reads.join(DOWNSAMPLE_RATE.out.downsampled_rate.map{ meta, sr, snr -> [ meta, snr]})
-    
+
     SEQTK_SAMPLE(ch_seq_samplerate)
     FAQCS(SEQTK_SAMPLE.out.reads)
+    }
     BWA_MEM(FAQCS.out.reads, reference[2], true)
     PICARD_MARKDUPLICATES(BWA_MEM.out.bam)
     PICARD_CLEANSAM(PICARD_MARKDUPLICATES.out.bam)
@@ -57,17 +62,17 @@ workflow BWA_PREPROCESS {
     QUALIMAP_BAMQC(PICARD_ADDORREPLACEREADGROUPS.out.bam, [], false)
 
     ch_alignment_combined = PICARD_ADDORREPLACEREADGROUPS.out.bam.join(SAMTOOLS_INDEX.out.bai)
-    
+
     SAMTOOLS_STATS    ( ch_alignment_combined, reference[0] )
     SAMTOOLS_FLAGSTAT ( ch_alignment_combined )
     SAMTOOLS_IDXSTATS ( ch_alignment_combined )
-    
+
     ch_qcreport_input = FAQCS.out.txt.join(QUALIMAP_BAMQC.out.results)
 
     QC_REPORT(ch_qcreport_input, reference[0])
 
-    ch_versions            = ch_versions.mix(  SEQKIT_PAIR.out.versions, 
-                                               SEQTK_SAMPLE.out.versions, 
+    ch_versions            = ch_versions.mix(  SEQKIT_PAIR.out.versions,
+                                               SEQTK_SAMPLE.out.versions,
                                                FAQCS.out.versions,
                                                BWA_MEM.out.versions,
                                                PICARD_MARKDUPLICATES.out.versions,

@@ -3,15 +3,12 @@ def VERSION = '2.3.2' // Version information not provided by tool on CLI
 process RAPIDNJ {
     label 'process_medium'
 
-<<<<<<< HEAD
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
     cpus 6
     memory '48 GB'
     time '1day'
     maxForks 10
 
-=======
->>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     conda (params.enable_conda ? "bioconda::rapidnj=2.3.2 conda-forge::biopython=1.78" : null)
