@@ -2,15 +2,12 @@ process LANE_MERGE {
 
     tag "$meta.id"
 
-<<<<<<< HEAD
     pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
     cpus 6
     memory '48 GB'
     time '1day'
     maxForks 10
 
-=======
->>>>>>> parent of 1d23bed (Updating the files that have been modified with maxFork statements)
     errorStrategy { task.attempt < 4 ? 'retry' : 'ignore'}
 
     input:
