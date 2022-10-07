@@ -1,13 +1,12 @@
 process bbduk{
-  tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/bbtools:38.96'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  // no way to designate cpus, uses 1.4GB memory and 4 cpus
+  cpus          4
+  container     'staphb/bbtools:38.98'
+  maxForks 10
 
   input:
   tuple val(sample), file(reads)

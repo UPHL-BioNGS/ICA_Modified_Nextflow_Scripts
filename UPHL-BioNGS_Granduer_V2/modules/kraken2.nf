@@ -1,18 +1,12 @@
 process kraken2_fastq {
-  tag "${sample}"
-  label "maxcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/kraken2:2.1.2-no-db'
-
-  cpus   = { 16 }
-  memory = { 30.GB }
-  time   = { 24.h  }
+  tag           "${sample}"
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/kraken2:2.1.2-no-db'
+  // given 12 cpus, it uses up to 14 cpus and 8.2G memory
+  cpus          12
+  memory        26.GB
+  maxForks 10
 
   when:
   params.fastq_processes =~ /kraken2/
@@ -58,18 +52,13 @@ process kraken2_fastq {
 }
 
 process kraken2_fasta {
-  tag "${sample}"
-  label "maxcpus"
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/kraken2:2.1.2-no-db'
-
-  cpus   = { 16 }
-  memory = { 30.GB }
-  time   = { 24.h  }
+  tag           "${sample}"
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/kraken2:2.1.2-no-db'
+  // given 12 cpus, it uses up to 14 cpus and 8.2G memory
+  cpus          12
+  memory        26.GB
 
   when:
   params.contig_processes =~ /kraken2/

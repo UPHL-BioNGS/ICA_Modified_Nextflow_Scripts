@@ -1,14 +1,12 @@
 process iqtree2 {
   tag "Pylogenetic Analysis"
-  label "maxcpus"
 
   pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
-
-  errorStrategy 'ignore'
-
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   publishDir = [ path: params.outdir, mode: 'copy' ]
-
   container  'staphb/iqtree2:2.1.2'
+  cpus 4
+  maxForks 10
 
   when:
   params.phylogenetic_processes =~ /iqtree2/

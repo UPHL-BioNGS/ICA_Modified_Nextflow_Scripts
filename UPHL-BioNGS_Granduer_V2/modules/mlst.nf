@@ -1,13 +1,10 @@
 process mlst {
-  tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container   'staphb/mlst:2.22.0'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/mlst:2.22.1'
+  maxForks 10
 
   when:
   params.contig_processes =~ /mlst/

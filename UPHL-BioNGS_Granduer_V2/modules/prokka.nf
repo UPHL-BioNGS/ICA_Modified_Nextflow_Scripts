@@ -1,14 +1,12 @@
 process prokka {
   tag "${sample}"
-  label "maxcpus"
-
   pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
-
-  errorStrategy 'ignore'
-
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   publishDir = [ path: params.outdir, mode: 'copy' ]
-
   container  'staphb/prokka:1.14.5'
+  cpus 4
+  memory 26.GB
+  maxForks 10
 
   when:
   params.phylogenetic_processes =~ /prokka/

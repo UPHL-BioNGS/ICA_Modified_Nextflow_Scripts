@@ -1,13 +1,10 @@
 process snp_dists {
   tag "SNP matrix"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
+  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   publishDir = [ path: params.outdir, mode: 'copy' ]
-
   container  'staphb/snp-dists:0.8.2'
+  maxForks 10
 
   when:
   params.phylogenetic_processes =~ /snpdists/

@@ -1,13 +1,10 @@
 process fastp {
-  tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'bromberglab/fastp:latest'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/fastp:0.23.2'
+  maxForks 10
 
   input:
   tuple val(sample), file(reads)

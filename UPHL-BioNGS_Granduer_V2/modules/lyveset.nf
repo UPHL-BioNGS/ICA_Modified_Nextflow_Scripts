@@ -1,13 +1,12 @@
 process lyveset_shuffle {
-  tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/lyveset:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/lyveset:2.0.1'
+  // there is no way to designate cpu, but seems to use more than 1
+  cpus          4
+  maxForks 10
 
   when:
   params.fastq_processes =~ /cg_pipeline/
@@ -36,14 +35,13 @@ process lyveset_shuffle {
 }
 
 process lyveset_cg_pipeline {
-  tag "${sample}"
-  label "medcpus"
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/lyveset:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/lyveset:2.0.1'
+  // there is no way to designate cpu, but seems to use more than 1
+  cpus          4
 
   input:
   tuple val(sample), file(fastq), val(mash), val(genus), val(species), file(genome_file)

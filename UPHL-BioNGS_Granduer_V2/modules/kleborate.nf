@@ -1,17 +1,14 @@
 process kleborate {
-  tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/kleborate:2.1.0'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          4
+  container     'staphb/kleborate:2.2.0'
+  maxForks 10
 
   when:
-  params.contig_processes =~ /kleborate/ && flag =~ 'found'
+  flag =~ 'found'
 
   input:
   tuple val(sample), file(contig), val(flag)
@@ -19,7 +16,7 @@ process kleborate {
   output:
   tuple val(sample), env(kleborate_score)                               , emit: score
   tuple val(sample), env(kleborate_mlst)                                , emit: mlst
-  path "kleborate/${sample}_results.txt"                          , emit: collect
+  path "kleborate/${sample}_results.txt"                                , emit: collect
   path "logs/${task.process}/${sample}.${workflow.sessionId}.{log,err}" , emit: log
 
   shell:

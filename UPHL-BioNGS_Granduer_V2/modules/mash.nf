@@ -1,13 +1,10 @@
 process mash_sketch {
-  tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/mash:2.3'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/mash:2.3'
+  maxForks 10
 
   when:
   params.fastq_processes =~ /mash/
@@ -45,14 +42,11 @@ process mash_sketch {
 }
 
 process mash_dist {
-  tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/mash:2.3'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/mash:2.3'
 
   when:
   params.fastq_processes =~ /mash/ || params.contig_processes =~ /mash/

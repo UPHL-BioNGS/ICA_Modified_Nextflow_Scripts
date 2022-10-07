@@ -1,14 +1,10 @@
 process shigatyper {
-  tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'quay.io/uphl/shigatyper:latest'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  container     'staphb/shigatyper:2.0.1'
+  maxForks 10
 
   when:
   params.fastq_processes =~ /shigatyper/ && flag =~ 'found'

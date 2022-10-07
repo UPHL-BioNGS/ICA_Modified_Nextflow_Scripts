@@ -1,14 +1,13 @@
 process fastani {
-  tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/fastani:1.33'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  // given 4 CPUs, uses 2 CPUs and 1.5GB memory
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          4
+  memory        12.GB
+  container     'staphb/fastani:1.33'
+  maxForks 10
 
   when:
   params.contig_processes =~ /fastani/

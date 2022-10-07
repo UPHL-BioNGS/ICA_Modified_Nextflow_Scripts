@@ -1,17 +1,14 @@
 process serotypefinder_fastq {
-  tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/serotypefinder:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          4
+  container     'staphb/serotypefinder:2.0.1'
+  maxForks 10
 
   when:
-  params.fastq_processes =~ /serotypefinder/ && flag =~ 'found'
+  flag =~ 'found'
 
   input:
   tuple val(sample), file(file), val(flag)
@@ -48,13 +45,15 @@ process serotypefinder_fastq {
 }
 
 process serotypefinder_fasta {
-  tag "${sample}"
-  label "medcpus"
-
-  container 'staphb/serotypefinder:2.0.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          4
+  container     'staphb/serotypefinder:2.0.1'
 
   when:
-  params.contig_processes =~ /serotypefinder/ && flag =~ 'found'
+  flag =~ 'found'
 
   input:
   tuple val(sample), file(file), val(flag)
