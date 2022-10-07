@@ -1,14 +1,13 @@
 process roary {
   tag "Core Genome Alignment"
-  label 'maxcpus'
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
-
-  errorStrategy 'ignore'
-
+  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'hicpu-small'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   publishDir = [ path: params.outdir, mode: 'copy' ]
-
   container  'staphb/roary:3.13.0'
+  cpus   = { 15 }
+  memory = { 30.GB }
+  time   = { 24.h  }
+  maxForks 10
 
   when:
   params.phylogenetic_processes =~ /roary/

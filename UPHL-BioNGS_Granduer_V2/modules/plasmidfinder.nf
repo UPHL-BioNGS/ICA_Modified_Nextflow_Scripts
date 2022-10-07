@@ -1,13 +1,10 @@
 process plasmidfinder {
-  tag "${sample}"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'quay.io/uphl/plasmidfinder:latest'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "${params.outdir}", mode: 'copy'
+  container     'staphb/plasmidfinder:2.1.6'
+  maxForks 10
 
   when:
   params.fastq_processes =~ /plasmidfinder/ && task.process =~ /fastq_information/ || params.contig_processes =~ /plasmidfinder/ && task.process =~ /contig_information/

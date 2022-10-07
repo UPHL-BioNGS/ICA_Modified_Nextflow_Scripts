@@ -1,14 +1,11 @@
 process bwa {
-  tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/bwa:0.7.17'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "${params.outdir}", mode: 'copy'
+  cpus          4
+  container     'staphb/bwa:0.7.17'
+  maxForks 10
 
   input:
   tuple val(sample), file(reads), file(contig)

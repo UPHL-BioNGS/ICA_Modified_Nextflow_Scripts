@@ -2,13 +2,14 @@ process amrfinderplus {
   tag "${sample}"
   label "medcpus"
 
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "${params.outdir}", mode: 'copy'
+  cpus          3
+  container     'staphb/ncbi-amrfinderplus:3.10.36'
+  maxForks 10
 
-  errorStrategy 'ignore'
 
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/ncbi-amrfinderplus:3.10.24'
 
   when:
   params.contig_processes =~ /amrfinderplus/
