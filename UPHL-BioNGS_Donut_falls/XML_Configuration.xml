@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pd:pipeline xmlns:pd="xsd://www.illumina.com/ica/cp/pipelinedefinition" code="" version="1.0">
+    <pd:dataInputs>
+        <pd:dataInput code="reads" format="FASTQ" type="DIRECTORY" required="true" multiValue="false">
+            <pd:label>reads</pd:label>
+            <pd:description locked="false">Reads from a nanopore sequecing run</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="illumina" format="FASTQ" type="DIRECTORY" required="false" multiValue="false">
+            <pd:label>illumina</pd:label>
+            <pd:description locked="false">Reads from a illumina sequecing run that match the nanopore reads by sample and naming convention</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="sequencing_summary" format="TXT" type="DIRECTORY" required="false" multiValue="false">
+            <pd:label>sequencing_summary</pd:label>
+            <pd:description locked="false">From nanapore instrument, for assessing the quality of a sequencing run</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="project_dirs" format="UNKNOWN" type="DIRECTORY" required="true" multiValue="true">
+            <pd:label>project_dirs from edited Git Repo</pd:label>
+            <pd:description>directory with additional files/input to run pipeline --- other files in your github project; if using blobtools included a db</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="schema_json" format="JSON" type="FILE" required="true" multiValue="false">
+            <pd:label>schema_json</pd:label>
+            <pd:description>directory with additional files/input to run pipeline --- other files in your github project</pd:description>
+        </pd:dataInput>
+    </pd:dataInputs>
+    <pd:steps>
+        <pd:step execution="MANDATORY" code="General">
+            <pd:label>General</pd:label>
+            <pd:description>General parameters</pd:description>
+            <pd:tool code="generalparameters">
+                <pd:label locked="false"></pd:label>
+                <pd:description locked="false"></pd:description>
+                <pd:parameter code="assembler" minValues="1" maxValues="1" classification="USER">
+                    <pd:label>assembler</pd:label>
+                    <pd:description locked="false"></pd:description>
+                    <pd:optionsType>
+                        <pd:option>flye</pd:option>
+                        <pd:option>miniasm</pd:option>
+                        <pd:option>raven</pd:option>
+                        <pd:option>unicycler</pd:option>
+                    </pd:optionsType>
+                    <pd:value>flye</pd:value>
+                </pd:parameter>
+                <pd:parameter code="raven_options" minValues="1" maxValues="1" classification="USER">
+                    <pd:label>raven_options</pd:label>
+                    <pd:description locked="false"></pd:description>
+                    <pd:stringType/>
+                    <pd:value>--polishing-rounds 2</pd:value>
+                </pd:parameter>
+                <pd:parameter code="filtlong_options" minValues="1" maxValues="1" classification="USER">
+                    <pd:label>filtlong_options</pd:label>
+                    <pd:description locked="false"></pd:description>
+                    <pd:stringType/>
+                    <pd:value>--min_length 1000 --keep_percent 95</pd:value>
+                </pd:parameter>
+            </pd:tool>
+        </pd:step>
+    </pd:steps>
+</pd:pipeline>
