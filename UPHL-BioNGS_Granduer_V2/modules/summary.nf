@@ -2,7 +2,7 @@ process summary {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   container     "staphb/parallel-perl:latest"
   maxForks 10
 

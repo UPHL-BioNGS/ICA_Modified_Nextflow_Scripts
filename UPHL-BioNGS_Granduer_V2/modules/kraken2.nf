@@ -1,7 +1,7 @@
 process kraken2_fastq {
   tag           "${sample}"
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   container     'staphb/kraken2:2.1.2-no-db'
   // given 12 cpus, it uses up to 14 cpus and 8.2G memory
   cpus          12

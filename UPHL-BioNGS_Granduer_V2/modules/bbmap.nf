@@ -2,7 +2,7 @@ process bbduk{
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   // no way to designate cpus, uses 1.4GB memory and 4 cpus
   cpus          4
   container     'staphb/bbtools:38.98'

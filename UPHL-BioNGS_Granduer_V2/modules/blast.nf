@@ -2,7 +2,7 @@ process blastn {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   cpus          4
   container     'staphb/blast:2.13.0'
   maxForks 10

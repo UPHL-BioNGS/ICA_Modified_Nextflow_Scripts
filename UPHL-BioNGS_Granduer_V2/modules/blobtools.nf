@@ -2,7 +2,7 @@ process blobtools_create {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   container     'chrishah/blobtools:v1.1.1'
   maxForks 10
 

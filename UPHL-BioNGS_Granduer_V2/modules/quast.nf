@@ -2,7 +2,7 @@ process quast {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   container     'staphb/quast:5.0.2'
   maxForks 10
 

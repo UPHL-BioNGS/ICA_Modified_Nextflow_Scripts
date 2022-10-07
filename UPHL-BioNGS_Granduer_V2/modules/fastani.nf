@@ -3,7 +3,7 @@ process fastani {
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   // given 4 CPUs, uses 2 CPUs and 1.5GB memory
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   cpus          4
   memory        12.GB
   container     'staphb/fastani:1.33'

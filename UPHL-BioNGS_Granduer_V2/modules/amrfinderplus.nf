@@ -4,7 +4,7 @@ process amrfinderplus {
 
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   cpus          3
   container     'staphb/ncbi-amrfinderplus:3.10.36'
   maxForks 10

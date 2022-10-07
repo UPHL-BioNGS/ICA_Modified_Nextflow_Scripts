@@ -2,7 +2,7 @@ process seqsero2_fastq {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   cpus          4
   container     'staphb/seqsero2:1.2.1'
   maxForks 10

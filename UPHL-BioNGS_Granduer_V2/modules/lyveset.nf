@@ -2,7 +2,7 @@ process lyveset_shuffle {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "grandeur", mode: 'copy'
+  publishDir    "${params.outdir}", mode: 'copy'
   container     'staphb/lyveset:2.0.1'
   // there is no way to designate cpu, but seems to use more than 1
   cpus          4
