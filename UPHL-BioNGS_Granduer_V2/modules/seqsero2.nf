@@ -1,19 +1,14 @@
 process seqsero2_fastq {
-  tag "${sample}"
-  label "medcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
-
-  cpus   = { 4 }
-
-  errorStrategy 'ignore'
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container  'staphb/seqsero2:1.2.1'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "${params.outdir}", mode: 'copy'
+  cpus          4
+  container     'staphb/seqsero2:1.2.1'
+  maxForks 10
 
   when:
-  params.fastq_processes =~ /seqsero2/ && flag =~ 'found'
+  flag =~ 'found'
 
   input:
   tuple val(sample), file(file), val(flag)
@@ -68,17 +63,15 @@ process seqsero2_fastq {
 }
 
 process seqsero2_fasta {
-  tag "${sample}"
-  label "medcpus"
-
-  cpus   = { 4 }
-
-  container  'staphb/seqsero2:1.2.1'
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-medium'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "grandeur", mode: 'copy'
+  cpus          4
+  container     'staphb/seqsero2:1.2.1'
 
   when:
-  params.contig_processes =~ /seqsero2/ && flag =~ 'found'
+  flag =~ 'found'
 
   input:
   tuple val(sample), file(file), val(flag)

@@ -1,17 +1,13 @@
 process spades {
-  tag "${sample}"
-  label "maxcpus"
-
-  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-small'
-  
-  errorStrategy { task.exitStatus == 21 ? 'ignore' : 'terminate' }
-
-  publishDir = [ path: params.outdir, mode: 'copy' ]
-
-  container 'staphb/spades:3.15.4'
+  tag           "${sample}"
+  pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  publishDir    "${params.outdir}", mode: 'copy'
+  container     'staphb/shigatyper:2.0.1'
+  maxForks 10
 
   when:
-  params.fastq_processes =~ /spades/
+  flag =~ 'found'
 
   input:
   tuple val(sample), file(reads)
