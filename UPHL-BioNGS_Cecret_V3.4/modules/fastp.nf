@@ -1,5 +1,5 @@
 process fastp {
-  tag "${sample}"
+  tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   publishDir    "cecret", mode: 'copy'

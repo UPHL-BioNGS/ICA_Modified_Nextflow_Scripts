@@ -155,8 +155,7 @@ process summary {
 }
 
 process combine_results {
-  tag "Combining Results"
-  tag           "${sample}"
+  tag           "Combining Results"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   publishDir    "cecret", mode: 'copy'
