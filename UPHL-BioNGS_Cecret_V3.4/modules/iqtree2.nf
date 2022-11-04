@@ -2,7 +2,7 @@ process iqtree2 {
   tag           "Creating phylogenetic tree with iqtree"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'staphb/iqtree2:2.1.2'
   maxForks      10
   cpus          4

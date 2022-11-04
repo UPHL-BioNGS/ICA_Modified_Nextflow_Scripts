@@ -2,7 +2,7 @@ process seqyclean {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'staphb/seqyclean:1.10.09'
   maxForks      10
   cpus          4

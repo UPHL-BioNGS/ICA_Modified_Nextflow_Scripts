@@ -2,7 +2,7 @@ process bwa {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'staphb/bwa:0.7.17'
   cpus          4
   maxForks      10

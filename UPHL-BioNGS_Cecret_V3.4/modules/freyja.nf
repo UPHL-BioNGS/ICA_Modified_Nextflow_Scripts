@@ -2,7 +2,7 @@ process freyja {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'staphb/freyja:1.3.11'
   maxForks      10
   cpus          4
@@ -53,7 +53,7 @@ process freyja_aggregate {
   tag           "Aggregating results from freyja"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'staphb/freyja:1.3.11'
   maxForks      10
   cpus          4

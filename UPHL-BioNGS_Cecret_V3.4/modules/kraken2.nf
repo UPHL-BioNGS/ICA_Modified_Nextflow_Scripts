@@ -2,7 +2,7 @@ process kraken2 {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'staphb/kraken2:2.1.2-no-db'
   maxForks      10
   cpus          4

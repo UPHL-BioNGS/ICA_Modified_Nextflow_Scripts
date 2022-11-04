@@ -2,7 +2,7 @@ process vadr {
   tag           "QC metrics"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'staphb/vadr:1.5'
   maxForks      10
   cpus          4

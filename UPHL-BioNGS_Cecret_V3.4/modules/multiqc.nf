@@ -2,7 +2,7 @@ process multiqc_combine {
   tag           "multiqc"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'quay.io/biocontainers/multiqc:1.13--pyhdfd78af_0'
   maxForks      10
   cpus          4

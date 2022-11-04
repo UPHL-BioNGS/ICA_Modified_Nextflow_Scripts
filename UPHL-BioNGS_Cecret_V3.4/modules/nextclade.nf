@@ -2,7 +2,7 @@ process nextclade {
   tag           "Clade Determination"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'nextstrain/nextclade:latest'
   maxForks      10
   cpus          4

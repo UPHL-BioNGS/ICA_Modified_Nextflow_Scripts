@@ -2,7 +2,7 @@ process mafft {
   tag           "Multiple Sequence Alignment"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'staphb/mafft:7.475'
   maxForks      10
   cpus          4

@@ -3,7 +3,7 @@ process fasta_prep {
   tag           "${fasta}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
   cpus          4
@@ -43,7 +43,7 @@ process summary {
   tag           "${sample}"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
   cpus          4
@@ -158,7 +158,7 @@ process combine_results {
   tag           "Combining Results"
   pod           annotation: 'scheduler.illumina.com/presetSize' , value: 'standard-large'
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  publishDir    "cecret", mode: 'copy'
+  publishDir    "out/cecret", mode: 'copy'
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
   cpus          4
