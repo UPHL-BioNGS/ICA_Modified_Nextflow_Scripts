@@ -40,7 +40,7 @@ if ( params.fastas == params.multifastas ) {
 }
 
 //# outdir params
-params.outdir                               = workflow.launchDir + '/cecret'
+params.outdir                               = 'out/cecret'
 
 params.maxcpus                              = 8
 params.medcpus                              = 4
@@ -102,7 +102,7 @@ params.samtools_ampliconstats               = true
 params.samtools_plot_ampliconstats          = true
 params.markdup                              = false
 params.bedtools_multicov                    = true
-params.kraken2                              = false
+params.kraken2                              = true
 params.filter                               = false
 params.multiqc                              = true
 
@@ -141,7 +141,7 @@ params.iqtree2_options                      = '-ninit 2 -n 2 -me 0.05 -m GTR'
 params.multiqc_options                      = ''
 
 //# for optional contamination determination
-params.kraken2_db                           = false
+params.kraken2_db                           = workflow.launchDir + '/kraken2_db/minikraken2_v2_8GB_201904_UPDATE'
 
 //# organism specific
 params.nextclade                            = true
