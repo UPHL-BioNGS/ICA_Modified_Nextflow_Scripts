@@ -3,9 +3,9 @@ process quast {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/quast:5.0.2'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  //#UPHLICA cpus   4
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  cpus   4
   
   input:
   tuple val(sample), file(contigs)

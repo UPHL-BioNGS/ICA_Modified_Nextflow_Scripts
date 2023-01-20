@@ -5,9 +5,9 @@ process shigatyper {
   container     'staphb/shigatyper:2.0.1'
   stageInMode   'copy'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA cpus   4
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  cpus   4
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   
   when:
   flag =~ 'found'

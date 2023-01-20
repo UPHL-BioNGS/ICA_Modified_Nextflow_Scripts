@@ -4,9 +4,9 @@ process iqtree2 {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/iqtree2:2.1.2'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  //#UPHLICA cpus 12
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  cpus 12
   
   input:
   file(msa)

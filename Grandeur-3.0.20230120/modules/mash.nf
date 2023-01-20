@@ -4,9 +4,9 @@ process mash {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/mash:2.3'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  //#UPHLICA cpus   8
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  cpus   8
 
   input:
   tuple val(sample), file(fasta), file(fastq), file(reference)

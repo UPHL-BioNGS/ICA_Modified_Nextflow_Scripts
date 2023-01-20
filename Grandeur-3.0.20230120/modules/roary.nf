@@ -4,9 +4,9 @@ process roary {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/roary:3.13.0'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'hicpu-small'
-  //#UPHLICA cpus   12
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'hicpu-small'
+  cpus   12
   
   input:
   file(contigs)

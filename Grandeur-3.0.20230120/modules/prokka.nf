@@ -4,10 +4,10 @@ process prokka {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/prokka:1.14.5'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'himem-small'
-  //#UPHLICA memory 26.GB
-  //#UPHLICA cpus   12
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'himem-small'
+  memory 26.GB
+  cpus   12
   
   input:
   tuple val(sample), file(contigs), val(organism)

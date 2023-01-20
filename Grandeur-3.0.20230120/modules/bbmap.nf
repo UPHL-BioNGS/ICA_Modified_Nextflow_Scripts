@@ -3,9 +3,9 @@ process bbduk {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/bbtools:38.98'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA cpus          3
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  cpus          3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
 
   input:
   tuple val(sample), file(reads)
@@ -50,9 +50,9 @@ process bbmap {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/bbtools:38.98'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA cpus          3
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  cpus          3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
 
   input:
   tuple val(sample), file(fastq), file(contigs)

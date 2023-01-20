@@ -3,8 +3,8 @@ process summary {
   publishDir    params.outdir, mode: 'copy'
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   
   input:
   file(input)
@@ -39,8 +39,8 @@ process names {
   publishDir    params.outdir, mode: 'copy'
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   
   input:
   tuple val(sample), file(input), val(reads), val(phix)

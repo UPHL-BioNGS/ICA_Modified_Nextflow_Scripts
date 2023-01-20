@@ -3,8 +3,8 @@ process species {
   publishDir    params.outdir, mode: 'copy'
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   
   input:
   file(results)
@@ -49,8 +49,8 @@ process decompression {
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
   stageInMode   'copy'
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   
   input:
   file(compressed)
@@ -86,8 +86,8 @@ process flag {
   publishDir    params.outdir, mode: 'copy'
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
     
   input:
   tuple val(sample), file(files)
@@ -152,8 +152,8 @@ process size {
   publishDir    params.outdir, mode: 'copy'
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
     
   input:
   tuple val(sample), file(mash_err), file(fastani), val(top_hit), file(genome_sizes), file(datasets_summary)
@@ -233,8 +233,8 @@ process representative {
   tag           "${accession}"
   container     'quay.io/biocontainers/pandas:1.1.5'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
     
   input:
   tuple val(accession), path(genomes)

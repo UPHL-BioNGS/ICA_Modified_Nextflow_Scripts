@@ -4,9 +4,9 @@ process seqsero2 {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/seqsero2:1.2.1'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  //#UPHLICA cpus   4
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  cpus   4
   
   when:
   flag =~ 'found'

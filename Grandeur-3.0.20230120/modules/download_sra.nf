@@ -3,8 +3,8 @@ process download_sra {
   publishDir    params.outdir, mode: 'copy'
   container     'quay.io/biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   
   input:
   val(SRR)

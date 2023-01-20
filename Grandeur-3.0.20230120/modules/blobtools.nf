@@ -3,8 +3,8 @@ process blobtools_create {
   publishDir    params.outdir, mode: 'copy'
   container     'chrishah/blobtools:v1.1.1'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   
   input:
   tuple val(sample), file(contig), file(blastn), file(bam)
@@ -40,8 +40,8 @@ process blobtools_view {
   publishDir    params.outdir, mode: 'copy'
   container     'chrishah/blobtools:v1.1.1'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   
   input:
   tuple val(sample), file(json)
@@ -74,8 +74,8 @@ process blobtools_plot {
   publishDir    params.outdir, mode: 'copy'
   container     'chrishah/blobtools:v1.1.1'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   
   input:
   tuple val(sample), file(json)

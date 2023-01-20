@@ -3,8 +3,8 @@ process datasets_summary {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/ncbi-datasets:14.3.0'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   
   input:
   val(taxon)
@@ -41,8 +41,8 @@ process datasets_download {
   publishDir    params.outdir, mode: 'copy'
   container     'staphb/ncbi-datasets:14.3.0'
   maxForks      10
-  //#UPHLICA errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  //#UPHLICA pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   
   input:
   file(ids)
