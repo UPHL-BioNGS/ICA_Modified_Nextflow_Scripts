@@ -63,6 +63,7 @@ cd ~/sandbox/ICA_Modified_Nextflow_Scripts/Grandeur-$VER
 for module in modules/*
 do
     cat $module | sed 's/\/\/#UPHLICA //g' > $module.tmp
+    mv $module.tmp $module
 done
 
 echo "$(date): Finished!"
