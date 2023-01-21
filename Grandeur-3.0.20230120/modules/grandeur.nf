@@ -210,7 +210,7 @@ process size {
       echo "The expected size based on $genus and $species was not found" | tee -a $log_file
     fi
 
-    mash_size="$(grep "Estimated genome size" !{mash_err} | awk '{print $4 }' | sort -r | tr '\\n' ' ' )"
+    mash_size="$(grep "Estimated genome size" !{mash_err} | awk '{print $4 }' | sort -gr | tr '\\n' ' ' )"
     echo "The expected size based on kmers from mash is $mash_size" | tee -a $log_file
     
     if [ -f "datasets_summary.csv" ]
@@ -218,10 +218,13 @@ process size {
       ncbi_size=$(grep $accession datasets_summary.csv | cut -f 5 -d "," )
       echo "The expected size based on the fastANI top hit is $ncbi_size" | tee -a $log_file
       size=$ncbi_size
+    else
+      echo "datasets wasn't there!"
+      exit 1
     fi
 
-    echo "sample,genus,species,accession,expected,top_hit,ncbi,mash" > size/!{sample}_size.csv
-    echo "!{sample},$genus,$species,$accession,$expected_size,$top_hit_size,$ncbi_size,$mash_size" >> size/!{sample}_size.csv
+    echo "sample,genus,species,accession,size,expected,top_hit,ncbi,mash" > size/!{sample}_size.csv
+    echo "!{sample},$genus,$species,$accession,$size,$expected_size,$top_hit_size,$ncbi_size,$mash_size" >> size/!{sample}_size.csv
 
     if [ -z "$size" ] ; then size=$(echo $mash_size | cut -f 1 -d " " ) ; fi
     
