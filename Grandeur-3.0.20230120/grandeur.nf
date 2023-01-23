@@ -55,9 +55,9 @@ params.gff                        = workflow.launchDir + "/gff"
 params.sample_sheet               = ""
 
 // external files
-params.kraken2_db                 = ""
-params.blast_db                   = ""
-params.mash_db                    = ""
+params.kraken2_db = workflow.launchDir + "/kraken2_db/"
+params.blast_db = workflow.launchDir + "/blast_db/"
+params.mash_db = workflow.launchDir + "/new_mash/"
 params.fastani_ref                = workflow.projectDir + "/db/fastani_refs.tar.gz"
 params.genome_sizes               = workflow.projectDir + "/assets/genome_sizes.json"
 params.genome_references          = workflow.projectDir + "/assets/genomes.txt"
