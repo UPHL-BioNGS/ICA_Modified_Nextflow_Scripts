@@ -59,11 +59,21 @@ else
     echo "$(date): download complete"
 fi
 
+# removing all the commends for ICA specific configurations
 cd ~/sandbox/ICA_Modified_Nextflow_Scripts/Grandeur-$VER
 for module in modules/*
 do
     cat $module | sed 's/\/\/#UPHLICA //g' > $module.tmp
     mv $module.tmp $module
 done
+
+# changing the database directories
+cat grandeur.nf | \
+    sed 's/^params.kraken2_db.*/params.kraken2_db = workflow.launchDir + "\/kraken2_db\/"/g' | \
+    sed 's/^params.blast_db.*/params.blast_db = workflow.launchDir + "\/blast_db\/"/g' | \
+    sed 's/^params.mash_db.*/params.mash_db = workflow.launchDir + "\/new_mash\/"/g' \
+    > grandeur.nf.tmp
+
+mv grandeur.nf.tmp grandeur.nf
 
 echo "$(date): Finished!"
