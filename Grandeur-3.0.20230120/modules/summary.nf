@@ -5,7 +5,9 @@ process summary {
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  
+  memory 1.GB
+  cpus 3
+
   input:
   file(input)
 
@@ -41,6 +43,8 @@ process names {
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  memory 1.GB
+  cpus 3
   
   input:
   tuple val(sample), file(input), val(reads), val(phix)

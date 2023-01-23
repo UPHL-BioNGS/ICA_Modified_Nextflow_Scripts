@@ -6,7 +6,8 @@ process mash {
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  cpus   8
+  cpus   7
+  memory 28.GB
 
   input:
   tuple val(sample), file(fasta), file(fastq), file(reference)

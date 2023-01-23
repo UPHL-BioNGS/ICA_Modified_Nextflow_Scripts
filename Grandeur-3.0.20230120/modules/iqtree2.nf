@@ -5,8 +5,9 @@ process iqtree2 {
   container     'staphb/iqtree2:2.1.2'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  cpus 12
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  cpus 6
+  memory 26.GB
   
   input:
   file(msa)

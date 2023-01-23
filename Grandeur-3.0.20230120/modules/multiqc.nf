@@ -5,8 +5,9 @@ process multiqc {
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  cpus   3
-  
+  memory 1.GB
+  cpus 3
+
   input:
   file(input)
 

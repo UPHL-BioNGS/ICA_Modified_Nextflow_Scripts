@@ -4,7 +4,9 @@ process datasets_summary {
   container     'staphb/ncbi-datasets:14.3.0'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  memory 1.GB
+  cpus 3
   
   input:
   val(taxon)
@@ -43,7 +45,9 @@ process datasets_download {
   container     'staphb/ncbi-datasets:14.3.0'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  memory 1.GB
+  cpus 3
   
   input:
   file(ids)

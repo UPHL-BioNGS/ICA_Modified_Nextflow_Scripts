@@ -4,8 +4,9 @@ process bbduk {
   container     'staphb/bbtools:38.98'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  cpus          3
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  cpus 3
+  memory 5.GB
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
 
   input:
   tuple val(sample), file(reads)
@@ -51,8 +52,9 @@ process bbmap {
   container     'staphb/bbtools:38.98'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  cpus          3
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  cpus 6
+  memory 16.GB
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
 
   input:
   tuple val(sample), file(fastq), file(contigs)

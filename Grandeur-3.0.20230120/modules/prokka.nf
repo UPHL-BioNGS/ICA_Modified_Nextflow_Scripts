@@ -6,9 +6,9 @@ process prokka {
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'himem-small'
-  memory 26.GB
-  cpus   12
-  
+  memory 60.GB
+  cpus 7
+
   input:
   tuple val(sample), file(contigs), val(organism)
 

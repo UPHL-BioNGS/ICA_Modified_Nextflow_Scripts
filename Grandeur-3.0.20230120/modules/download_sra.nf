@@ -4,7 +4,9 @@ process download_sra {
   container     'quay.io/biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  memory 1.GB
+  cpus 3
   
   input:
   val(SRR)

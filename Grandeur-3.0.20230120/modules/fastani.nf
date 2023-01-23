@@ -7,7 +7,9 @@ process fastani {
   container     'staphb/fastani:1.33'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  memory 12.GB
+  cpus 3
   
   input:
   tuple val(sample), file(contigs), path(genomes)

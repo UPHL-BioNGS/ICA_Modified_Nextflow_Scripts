@@ -6,7 +6,8 @@ process spades {
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  cpus   8
+  memory 26.GB
+  cpus 7
   
   input:
   tuple val(sample), file(reads)

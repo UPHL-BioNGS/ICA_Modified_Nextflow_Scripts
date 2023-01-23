@@ -6,7 +6,8 @@ process roary {
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'hicpu-small'
-  cpus   12
+  cpus 15
+  memory 30.GB
   
   input:
   file(contigs)

@@ -5,8 +5,9 @@ process seqsero2 {
   container     'staphb/seqsero2:1.2.1'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  cpus   4
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  memory 1.GB
+  cpus 3
   
   when:
   flag =~ 'found'
