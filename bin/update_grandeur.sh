@@ -70,7 +70,7 @@ done
 # changing the database directories
 cat grandeur.nf | \
     sed 's/^params.kraken2_db.*/params.kraken2_db = workflow.launchDir + "\/kraken2_db\/"/g' | \
-    sed 's/^params.blast_db.*/params.blast_db = workflow.launchDir + "\/blast_db\/"/g' | \
+    sed 's/^params.blast_db .*/params.blast_db = workflow.launchDir + "\/blast_db\/"/g' | \
     sed 's/^params.mash_db.*/params.mash_db = workflow.launchDir + "\/new_mash\/"/g' \
     > grandeur.nf.tmp
 
