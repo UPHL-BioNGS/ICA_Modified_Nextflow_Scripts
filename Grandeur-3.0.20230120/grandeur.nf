@@ -55,9 +55,9 @@ params.gff                        = workflow.launchDir + "/gff"
 params.sample_sheet               = ""
 
 // external files
-params.kraken2_db = workflow.launchDir + "/kraken2_db/"
-params.blast_db = workflow.launchDir + "/blast_db/"
-params.mash_db = workflow.launchDir + "/new_mash/rep-genomes.msh"
+params.kraken2_db                 = ""
+params.blast_db                   = ""
+params.mash_db                    = ""
 params.fastani_ref                = workflow.projectDir + "/db/fastani_refs.tar.gz"
 params.genome_sizes               = workflow.projectDir + "/assets/genome_sizes.json"
 params.genome_references          = workflow.projectDir + "/assets/genomes.txt"
@@ -319,7 +319,9 @@ workflow {
     ch_top_hit_files = ch_top_hit.map {it -> tuple(it[0], it[1])}
     ch_top_hit_hit   = ch_top_hit.map {it -> tuple(it[0], it[2])}
 
-    min_hash_distance.out.mash_err
+    ch_contigs
+      .join(min_hash_distance.out.mash_err)
+      .map(it -> tuple (it[0], it[2]))
       .join(ch_top_hit_hit, by: 0, remainder: true)
       .join(ch_top_hit_files, by: 0, remainder: true)
       .combine(ch_genome_sizes)
