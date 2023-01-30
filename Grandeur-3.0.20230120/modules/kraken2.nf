@@ -5,9 +5,9 @@ process kraken2_fastq {
   container     'staphb/kraken2:2.1.2-no-db'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  cpus          7
-  memory        26.GB
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  cpus 14
+  memory 60.GB
   
   input:
   tuple val(sample), file(file), path(kraken2_db)

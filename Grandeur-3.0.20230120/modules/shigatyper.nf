@@ -6,9 +6,9 @@ process shigatyper {
   stageInMode   'copy'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  memory 26.GB
+  cpus 7
   
   when:
   flag =~ 'found'

@@ -5,9 +5,9 @@ process spades {
   container     'staphb/spades:3.15.5'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  memory 26.GB
-  cpus 7
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
   
   input:
   tuple val(sample), file(reads)

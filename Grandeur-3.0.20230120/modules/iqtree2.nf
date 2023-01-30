@@ -5,9 +5,9 @@ process iqtree2 {
   container     'staphb/iqtree2:2.1.2'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  cpus 6
-  memory 26.GB
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  cpus 14
+  memory 60.GB
   
   input:
   file(msa)
@@ -38,5 +38,7 @@ process iqtree2 {
       -ntmax !{task.cpus} \
       $outgroup \
       | tee -a $log_file
+
+    if [ -f "iqtree2/iqtree.treefile" ]; then cp iqtree2/iqtree.treefile iqtree2/iqtree.treefile.nwk ; fi
   '''
 }

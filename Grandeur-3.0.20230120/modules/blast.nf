@@ -5,9 +5,9 @@ process blastn {
   container     'staphb/blast:2.13.0'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  cpus 7
-  memory 25.GB
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  cpus 14
+  memory 60.GB
 
   input:
   tuple val(sample), file(contig), path(blastdb)
