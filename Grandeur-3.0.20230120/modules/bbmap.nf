@@ -1,12 +1,13 @@
 process bbduk {
   tag           "${sample}"
   publishDir    params.outdir, mode: 'copy'
-  container     'staphb/bbtools:38.98'
+  container     'staphb/bbtools:39.01'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   cpus 3
   memory 5.GB
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  time '10m'
 
   input:
   tuple val(sample), file(reads)
@@ -49,12 +50,13 @@ process bbmap {
   tag           "${sample}"
   label         "maxcpus"
   publishDir    params.outdir, mode: 'copy'
-  container     'staphb/bbtools:38.98'
+  container     'staphb/bbtools:39.01'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   cpus 6
   memory 16.GB
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  time '2h'
 
   input:
   tuple val(sample), file(fastq), file(contigs)

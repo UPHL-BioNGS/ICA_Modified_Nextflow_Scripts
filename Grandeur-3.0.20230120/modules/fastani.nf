@@ -10,6 +10,7 @@ process fastani {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   memory 26.GB
   cpus 7
+  time '10m'
   
   input:
   tuple val(sample), file(contigs), path(genomes)

@@ -7,6 +7,7 @@ process datasets_summary {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
   
   input:
   val(taxon)
@@ -48,6 +49,7 @@ process datasets_download {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '1h'
   
   input:
   file(ids)

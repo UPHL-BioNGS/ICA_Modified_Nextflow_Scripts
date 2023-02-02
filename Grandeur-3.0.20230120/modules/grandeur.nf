@@ -7,6 +7,7 @@ process species {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
   
   input:
   file(results)
@@ -55,6 +56,7 @@ process decompression {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
 
   input:
   file(compressed)
@@ -94,6 +96,7 @@ process flag {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
 
   input:
   tuple val(sample), file(files)
@@ -162,6 +165,7 @@ process size {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
     
   input:
   tuple val(sample), file(mash_err), file(fastani), val(top_hit), file(genome_sizes), file(datasets_summary)
@@ -245,6 +249,7 @@ process representative {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
 
   input:
   tuple val(accession), path(genomes)

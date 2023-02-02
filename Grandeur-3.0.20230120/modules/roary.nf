@@ -8,6 +8,7 @@ process roary {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'hicpu-small'
   cpus 15
   memory 30.GB
+  time '10m'
   
   input:
   file(contigs)

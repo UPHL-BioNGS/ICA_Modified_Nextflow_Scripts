@@ -1,12 +1,13 @@
 process kleborate {
   tag           "${sample}"
   publishDir    params.outdir, mode: 'copy'
-  container     'staphb/kleborate:2.1.0'
+  container     'staphb/kleborate:2.2.0'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
   
   when:
   flag =~ 'found'

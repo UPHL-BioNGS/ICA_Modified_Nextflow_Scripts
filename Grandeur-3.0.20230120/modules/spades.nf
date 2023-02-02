@@ -8,6 +8,7 @@ process spades {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
   memory 60.GB
   cpus 14
+  time '5h'
   
   input:
   tuple val(sample), file(reads)

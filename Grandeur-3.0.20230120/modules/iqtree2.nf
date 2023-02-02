@@ -8,6 +8,7 @@ process iqtree2 {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
   cpus 14
   memory 60.GB
+  time '24h'
   
   input:
   file(msa)

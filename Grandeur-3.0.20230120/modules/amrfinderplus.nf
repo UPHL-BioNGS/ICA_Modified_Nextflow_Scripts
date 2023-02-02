@@ -2,12 +2,13 @@ process amrfinderplus {
   tag           "${sample}"
   label         "medcpus"
   publishDir    params.outdir, mode: 'copy'
-  container     'staphb/ncbi-amrfinderplus:3.10.36'
+  container     'staphb/ncbi-amrfinderplus:3.10.42'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   cpus 7
   memory 26.GB
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
+  time '10m'
 
   input:
   tuple val(sample), file(contigs), val(genus), val(species)

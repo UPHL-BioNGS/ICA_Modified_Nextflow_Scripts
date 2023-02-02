@@ -8,6 +8,7 @@ process seqsero2 {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
   
   when:
   flag =~ 'found'

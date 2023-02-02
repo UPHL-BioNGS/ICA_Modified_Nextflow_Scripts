@@ -7,6 +7,7 @@ process blobtools_create {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   cpus 3
   memory 2.GB
+  time '10m'
   
   input:
   tuple val(sample), file(contig), file(blastn), file(bam)
@@ -46,6 +47,7 @@ process blobtools_view {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   cpus 3
   memory 1.GB
+  time '10m'
   
   input:
   tuple val(sample), file(json)
@@ -82,6 +84,7 @@ process blobtools_plot {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   cpus 3
   memory 1.GB
+  time '10m'
   
   input:
   tuple val(sample), file(json)

@@ -8,6 +8,7 @@ process fastqscan {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
   memory 26.GB
   cpus 7
+  time '1h'
     
   input:
   tuple val(sample), file(fastq), val(size)

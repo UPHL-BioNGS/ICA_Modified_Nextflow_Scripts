@@ -7,6 +7,7 @@ process summary {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
 
   input:
   file(input)
@@ -45,6 +46,7 @@ process names {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '10m'
   
   input:
   tuple val(sample), file(input), val(reads), val(phix)

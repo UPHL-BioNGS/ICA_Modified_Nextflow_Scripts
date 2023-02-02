@@ -8,6 +8,7 @@ process kraken2_fastq {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
   cpus 14
   memory 60.GB
+  time '1h'
   
   input:
   tuple val(sample), file(file), path(kraken2_db)
@@ -52,8 +53,9 @@ process kraken2_fasta {
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-large'
-  cpus          7
-  memory        26.GB
+  cpus 7
+  memory 26.GB
+  time '1h'
   
   input:
   tuple val(sample), file(file), path(kraken2_db)

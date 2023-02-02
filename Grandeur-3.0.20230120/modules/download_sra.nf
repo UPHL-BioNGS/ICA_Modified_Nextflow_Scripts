@@ -7,6 +7,7 @@ process download_sra {
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
   memory 1.GB
   cpus 3
+  time '2h'
   
   input:
   val(SRR)
