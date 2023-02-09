@@ -4,9 +4,9 @@ process bbduk {
   container     'staphb/bbtools:39.01'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  cpus 3
-  memory 5.GB
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
+  cpus 14
+  memory 60.GB
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
   time '10m'
 
   input:

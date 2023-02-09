@@ -4,10 +4,10 @@ process blobtools_create {
   container     'chrishah/blobtools:v1.1.1'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  cpus 3
-  memory 2.GB
-  time '10m'
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  cpus 14
+  memory 60.GB
+  time '45m'
   
   input:
   tuple val(sample), file(contig), file(blastn), file(bam)

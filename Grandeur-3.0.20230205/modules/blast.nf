@@ -5,9 +5,9 @@ process blastn {
   container     'staphb/blast:2.13.0'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
-  cpus 14
-  memory 60.GB
+  pod annotation: 'scheduler.illumina.com/presetSize' , value: 'himem-medium'
+  cpus 8
+  memory 100.GB
   time '2h'
 
   input:

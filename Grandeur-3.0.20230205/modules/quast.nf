@@ -4,9 +4,9 @@ process quast {
   container     'staphb/quast:5.0.2'
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
   time '10m'
   
   input:
