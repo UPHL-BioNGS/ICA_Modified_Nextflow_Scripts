@@ -194,14 +194,14 @@ include { cecret }                                from './subworkflows/cecret.nf
 include { qc }                                    from './subworkflows/qc'        addParams(params)
 include { msa }                                   from './subworkflows/msa'       addParams(params)
 include { multiqc_combine }                       from './modules/multiqc'        addParams(params)
-include { mpx }                                   from './subworkflows/mpx'       addParams(params)
+include { mpx }                                   from './subworkflows/mpx'       addParams(params)                                 
 include { mpx as other }                          from './subworkflows/mpx'       addParams(params)
 include { sarscov2 }                              from './subworkflows/sarscov2'  addParams(params)
-include { test }                                  from './subworkflows/test'      addParams(params)
+include { test }                                  from './subworkflows/test'      addParams(params) 
 
 //# getting input files
 
-if ( params.sample_sheet ) {
+if ( params.sample_sheet ) { 
   Channel
     .fromPath("${params.sample_sheet}", type: "file")
     .view { "Sample sheet found : ${it}" }
@@ -209,10 +209,10 @@ if ( params.sample_sheet ) {
     .map { row -> tuple( "${row.sample}", [ file("${row.fastq_1}"), file("${row.fastq_2}") ]) }
     .branch {
       single : it[1] =~ /single/
-      paired : true
+      paired : true 
     }
     .set { inputs }
-
+  
   ch_paired_reads=inputs.paired.map{ it -> tuple(it[0], it[1], "paired")}
   ch_single_reads=inputs.single.map{ it -> tuple(it[0], it[1][0], "single")}
 
@@ -310,10 +310,10 @@ workflow {
   ch_multifastas.view  { "MultiFasta file found : ${it}" }
   ch_reads.ifEmpty     { println("No fastq or fastq.gz files were found at ${params.reads} or ${params.single_reads}") }
 
-  if ( ! params.sra_accessions.isEmpty() ) {
+  if ( ! params.sra_accessions.isEmpty() ) { 
     test(ch_sra_accessions)
     ch_reads = ch_reads.mix(test.out.reads)
-  }
+  } 
 
   //  combine_results_script
   fasta_prep(ch_fastas)
@@ -336,7 +336,7 @@ workflow {
     nextclade_file  = sarscov2.out.nextclade_file
     vadr_file       = sarscov2.out.vadr_file
     freyja_file     = sarscov2.out.freyja_file
-    dataset         = sarscov2.out.dataset
+    dataset         = sarscov2.out.dataset 
   } else if ( params.species == 'mpx') {
     mpx(fasta_prep.out.fastas.mix(ch_multifastas).mix(cecret.out.consensus))
     pangolin_file   = Channel.empty()
@@ -359,8 +359,8 @@ workflow {
     dataset         = Channel.empty()
   }
 
-  if ( params.relatedness ) {
-    msa(fasta_prep.out.fastas.concat(ch_multifastas).concat(cecret.out.consensus), ch_reference_genome, ch_dataset)
+  if ( params.relatedness ) { 
+    msa(fasta_prep.out.fastas.concat(ch_multifastas).concat(cecret.out.consensus), ch_reference_genome, ch_dataset) 
 
     tree      = msa.out.tree
     alignment = msa.out.msa

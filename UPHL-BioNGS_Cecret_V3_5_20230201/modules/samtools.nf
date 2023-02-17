@@ -1,17 +1,17 @@
 process samtools_stats {
   tag "${sample}"
 
+  container      = 'staphb/samtools:1.16'
+
   publishDir    params.outdir, mode: 'copy'
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
-
-  container      = 'staphb/samtools:1.16'
 
   when:
   params.samtools_stats
@@ -48,9 +48,9 @@ process samtools_coverage {
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
 
@@ -94,12 +94,11 @@ process samtools_flagstat {
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
-
   input:
   tuple val(sample), file(bam)
 
@@ -133,9 +132,9 @@ process samtools_depth {
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
 
@@ -175,9 +174,9 @@ process samtools_ampliconstats {
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
 
@@ -219,9 +218,9 @@ process samtools_plot_ampliconstats {
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
 
@@ -300,9 +299,9 @@ process samtools_filter {
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
 
@@ -344,9 +343,9 @@ process samtools_ampliconclip {
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
 
@@ -387,9 +386,9 @@ process samtools_markdup {
 
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
-  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-medium'
-  memory 1.GB
-  cpus 3
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
 
   time '45m'
 

@@ -60,6 +60,18 @@ process freyja {
 process freyja_aggregate {
   tag "Aggregating results from freyja"
 
+  container        = 'staphb/freyja:1.3.11'
+
+  maxForks      10
+  errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
+  pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
+  memory 60.GB
+  cpus 14
+
+  publishDir    params.outdir, mode: 'copy'
+
+  time '45m'
+
   when:
   params.freyja_aggregate
 
