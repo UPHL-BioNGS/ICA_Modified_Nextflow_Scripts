@@ -179,6 +179,8 @@ process combine_results {
 
   container        = 'quay.io/biocontainers/pandas:1.1.5'
 
+  publishDir    params.outdir, mode: 'copy'
+
   input:
   file(nextclade)
     file(pangolin)

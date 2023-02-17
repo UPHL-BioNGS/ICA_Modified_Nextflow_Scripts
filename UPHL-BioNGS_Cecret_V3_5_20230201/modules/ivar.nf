@@ -64,11 +64,15 @@ process ivar_consensus {
 process ivar_variants {
   tag "${sample}"
 
+  publishDir    params.outdir, mode: 'copy'
+
   maxForks      10
   errorStrategy { task.attempt < 2 ? 'retry' : 'ignore'}
   pod annotation: 'scheduler.illumina.com/presetSize', value: 'standard-xlarge'
   memory 60.GB
   cpus 14
+
+  container          = 'staphb/ivar:1.3.1'
 
   time '45m'
 
@@ -131,6 +135,10 @@ process ivar_trim {
   cpus 14
 
   time '45m'
+
+  container          = 'staphb/ivar:1.3.1'
+
+  publishDir    params.outdir, mode: 'copy'
 
   input:
   tuple val(sample), file(bam), file(primer_bed)
