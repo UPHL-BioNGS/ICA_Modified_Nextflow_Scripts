@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pd:pipeline xmlns:pd="xsd://www.illumina.com/ica/cp/pipelinedefinition" code="mycosnp-nf pipeline" version="1.0">
+    <pd:dataInputs>
+        <pd:dataInput code="input_samples" format="FASTQ" type="FILE" required="true" multiValue="true">
+            <pd:label>input_samples</pd:label>
+            <pd:description>input samples for pipeline.
+All files will be staged in workflow.launchDir</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="input_csv" format="CSV" type="FILE" required="true" multiValue="false">
+            <pd:label>input_csv</pd:label>
+            <pd:description>input csv for pipeline.
+All files will be staged in workflow.launchDir</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="modules_json" format="JSON" type="FILE" required="true" multiValue="false">
+            <pd:label>modules_json</pd:label>
+            <pd:description>directory with additional files/input to run pipeline --- other files in your github project</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="schema_json" format="JSON" type="FILE" required="true" multiValue="false">
+            <pd:label>schema_json</pd:label>
+            <pd:description>directory with additional files/input to run pipeline --- other files in your github project</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="project_dirs" format="UNKNOWN" type="DIRECTORY" required="true" multiValue="true">
+            <pd:label>project_dirs</pd:label>
+            <pd:description>directory with additional files/input to run pipeline --- other files in your github project</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="fasta" format="FASTA" type="FILE" required="true" multiValue="false">
+            <pd:label>fasta</pd:label>
+            <pd:description>directory with additional files/input to run pipeline --- other files in your github project</pd:description>
+        </pd:dataInput>
+        <pd:dataInput code="vcfs" format="UNKNOWN" type="FILE" required="false" multiValue="true">
+            <pd:label>vcfs</pd:label>
+            <pd:description>vcfs from multi-runs</pd:description>
+        </pd:dataInput>
+    </pd:dataInputs>
+    <pd:steps>
+        <pd:step execution="MANDATORY" code="input_output_options">
+            <pd:label>input_output_options</pd:label>
+            <pd:description>input_output_options parameters</pd:description>
+            <pd:tool code="input_output_options parameters">
+                <pd:label>input_output_options</pd:label>
+                <pd:description>input_output_options parameters</pd:description>
+                <pd:parameter code="input" minValues="1" maxValues="1" classification="USER">
+                    <pd:label>input</pd:label>
+                    <pd:description>Path to comma-separated file containing information about the samples in the experiment.
+You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://github.com/CDCgov/mycosnp-nf/blob/master/docs/usage.md#samplesheet-input).</pd:description>
+                    <pd:stringType/>
+                    <pd:value>./samplesheet.csv</pd:value>
+                </pd:parameter>
+                <pd:parameter code="outdir" minValues="1" maxValues="1" classification="USER">
+                    <pd:label>outdir</pd:label>
+                    <pd:description>Path to the output directory where the results will be saved.</pd:description>
+                    <pd:stringType/>
+                    <pd:value>./out/Results</pd:value>
+                </pd:parameter>
+                <pd:parameter code="multiqc_title" minValues="1" maxValues="1" classification="USER">
+                    <pd:label>multiqc_title</pd:label>
+                    <pd:description>MultiQC report title. Printed as page header, used for filename if not otherwise specified.</pd:description>
+                    <pd:stringType/>
+                    <pd:value>MultiQCTitle</pd:value>
+                </pd:parameter>
+                <pd:parameter code="publish_dir_mode" minValues="1" maxValues="1" classification="USER">
+                    <pd:label>publish_dir_mode</pd:label>
+                    <pd:description>Method used to save pipeline results to output directory.</pd:description>
+                    <pd:optionsType>
+                        <pd:option>symlink</pd:option>
+                        <pd:option>rellink</pd:option>
+                        <pd:option>link</pd:option>
+                        <pd:option>copy</pd:option>
+                        <pd:option>copyNoFollow</pd:option>
+                        <pd:option>move</pd:option>
+                    </pd:optionsType>
+                    <pd:value>copy</pd:value>
+                </pd:parameter>
+                <pd:parameter code="add_vcf_file" minValues="1" maxValues="1" classification="USER">
+                    <pd:label>add_vcf_file</pd:label>
+                    <pd:description>VCF files from previous runs of this pipeline as additional inputs sequences into the pipeline.</pd:description>
+                    <pd:stringType/>
+                    <pd:value>false</pd:value>
+                </pd:parameter>
+            </pd:tool>
+        </pd:step>
+    </pd:steps>
+</pd:pipeline>
