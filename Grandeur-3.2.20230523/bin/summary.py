@@ -231,34 +231,38 @@ if exists(multiqc_json) :
         data = json.load(multiqc_data)
         
         # fastp filtered reads
-        samples = [sample.replace("_rmphix_R1", "") for sample in data["report_plot_data"]['fastp_filtered_reads_plot']['samples'][0]]
-        fastp_passedreads_df = pd.DataFrame(samples, columns=['fastp_sample'])
-        fastp_passedreads_df['fastp_passed_reads'] = data["report_plot_data"]['fastp_filtered_reads_plot']['datasets'][0][0]['data']
-        summary_df = pd.merge(summary_df, fastp_passedreads_df, left_on="sample", right_on="fastp_sample", how = 'left')
-        summary_df.drop("fastp_sample", axis=1, inplace=True)
+        if "fastp_filtered_reads_plot" in data["report_plot_data"].keys():
+            samples = [sample.replace("_rmphix_R1", "") for sample in data["report_plot_data"]['fastp_filtered_reads_plot']['samples'][0]]
+            fastp_passedreads_df = pd.DataFrame(samples, columns=['fastp_sample'])
+            fastp_passedreads_df['fastp_passed_reads'] = data["report_plot_data"]['fastp_filtered_reads_plot']['datasets'][0][0]['data']
+            summary_df = pd.merge(summary_df, fastp_passedreads_df, left_on="sample", right_on="fastp_sample", how = 'left')
+            summary_df.drop("fastp_sample", axis=1, inplace=True)
         
         # bbduk phix reads
-        samples = [sample.replace(".phix", "") for sample in data['report_saved_raw_data']['bbmap']['stats'].keys()]
-        phix_reads=[]
-        for sample in data['report_saved_raw_data']['bbmap']['stats'].keys() :
-            phix_reads.append(data['report_saved_raw_data']['bbmap']['stats'][sample]['kv']['Matched'])
-        bbduk_phixreads_df = pd.DataFrame(samples, columns=['bbduk_sample'])
-        bbduk_phixreads_df['bbduk_phix_reads'] = phix_reads
-        summary_df = pd.merge(summary_df, bbduk_phixreads_df, left_on="sample", right_on="bbduk_sample", how = 'left')
-        summary_df.drop("bbduk_sample", axis=1, inplace=True)
+        if "bbmap" in data['report_saved_raw_data'].keys():
+            print("Adding in phix reads from bbmap")
+            samples = [sample.replace(".phix", "") for sample in data['report_saved_raw_data']['bbmap']['stats'].keys()]
+            phix_reads=[]
+            for sample in data['report_saved_raw_data']['bbmap']['stats'].keys() :
+                phix_reads.append(data['report_saved_raw_data']['bbmap']['stats'][sample]['kv']['Matched'])
+            bbduk_phixreads_df = pd.DataFrame(samples, columns=['bbduk_sample'])
+            bbduk_phixreads_df['bbduk_phix_reads'] = phix_reads
+            summary_df = pd.merge(summary_df, bbduk_phixreads_df, left_on="sample", right_on="bbduk_sample", how = 'left')
+            summary_df.drop("bbduk_sample", axis=1, inplace=True)
         
 if exists(multiqc_stats) : 
     file = multiqc_stats
     print("Adding analysis parsed via multiqc in " + file)
     new_df = pd.read_table(file, dtype = str, index_col= False)
-    tmp_df = new_df[["Sample","FastQC_mqc-generalstats-fastqc-avg_sequence_length"]]
-    tmp_df["fastqc_avg_length"]= tmp_df["FastQC_mqc-generalstats-fastqc-avg_sequence_length"]
-    tmp_df.drop("FastQC_mqc-generalstats-fastqc-avg_sequence_length", axis=1, inplace=True)
-    
-    summary_df["possible_fastqc_name"] = summary_df['file'].str.split(" ").str[0].str.split(".").str[0]
-    summary_df = pd.merge(summary_df, tmp_df, left_on="possible_fastqc_name", right_on="Sample", how = 'left')
-    summary_df.drop("Sample", axis=1, inplace=True)
-    summary_df.drop("possible_fastqc_name", axis=1, inplace=True)
+    if "FastQC_mqc-generalstats-fastqc-avg_sequence_length" in new_df.columns :
+        tmp_df = new_df[["Sample","FastQC_mqc-generalstats-fastqc-avg_sequence_length"]]
+        tmp_df["fastqc_avg_length"]= tmp_df["FastQC_mqc-generalstats-fastqc-avg_sequence_length"]
+        tmp_df.drop("FastQC_mqc-generalstats-fastqc-avg_sequence_length", axis=1, inplace=True)
+        
+        summary_df["possible_fastqc_name"] = summary_df['file'].str.split(" ").str[0].str.split(".").str[0]
+        summary_df = pd.merge(summary_df, tmp_df, left_on="possible_fastqc_name", right_on="Sample", how = 'left')
+        summary_df.drop("Sample", axis=1, inplace=True)
+        summary_df.drop("possible_fastqc_name", axis=1, inplace=True)
 
 # size : getting the size and coverage and warning if there's too much stdev
 if exists(size) :
@@ -282,10 +286,32 @@ if exists(size) :
     summary_df.drop("size_accession", axis=1, inplace=True)
     summary_df['warnings'] = summary_df['warnings'] + summary_df['size_warning']
 
-    summary_df['total_bases'] = summary_df['fastqc_total sequences'].astype(int) * summary_df['fastqc_avg_length'].astype(float)
-    summary_df['coverage'] = summary_df['total_bases'].astype(float) / summary_df['size_size'].astype(float)
-    summary_df['coverage_warning'] = summary_df['coverage'].apply(lambda x: "Low coverage," if x <= 20 else "")
-    summary_df['warnings'] = summary_df['warnings'] + summary_df['coverage_warning']
+    if "fastqc_total sequences" in summary_df:
+        summary_df['total_bases']          = summary_df['fastqc_total sequences'].astype('Int32') * summary_df['fastqc_avg_length'].astype(float)
+    else:
+        summary_df['total_bases']          = summary_df['quast_Total length'].astype(float)
+
+    summary_df['coverage']                 = summary_df['total_bases'].astype(float) /  summary_df['size_size'].astype(float)
+    summary_df['coverage_for_1.5M_genome'] = summary_df['total_bases'].astype(float) /  1500000
+    summary_df['coverage_for_2M_genome']   = summary_df['total_bases'].astype(float) /  2000000
+    summary_df['coverage_for_2.5M_genome'] = summary_df['total_bases'].astype(float) /  2500000
+    summary_df['coverage_for_3M_genome']   = summary_df['total_bases'].astype(float) /  3000000
+    summary_df['coverage_for_3.5M_genome'] = summary_df['total_bases'].astype(float) /  3500000
+    summary_df['coverage_for_4M_genome']   = summary_df['total_bases'].astype(float) /  4000000
+    summary_df['coverage_for_4.5M_genome'] = summary_df['total_bases'].astype(float) /  4500000
+    summary_df['coverage_for_5M_genome']   = summary_df['total_bases'].astype(float) /  5000000
+    summary_df['coverage_for_5.5M_genome'] = summary_df['total_bases'].astype(float) /  5500000
+    summary_df['coverage_for_6M_genome']   = summary_df['total_bases'].astype(float) /  6000000
+    summary_df['coverage_for_6.5M_genome'] = summary_df['total_bases'].astype(float) /  6500000
+    summary_df['coverage_for_7M_genome']   = summary_df['total_bases'].astype(float) /  7000000
+    summary_df['coverage_for_7.5M_genome'] = summary_df['total_bases'].astype(float) /  7500000
+    summary_df['coverage_for_8M_genome']   = summary_df['total_bases'].astype(float) /  8000000
+    summary_df['coverage_for_8.5M_genome'] = summary_df['total_bases'].astype(float) /  8500000
+    summary_df['coverage_for_9M_genome']   = summary_df['total_bases'].astype(float) /  9000000
+    summary_df['coverage_for_9.5M_genome'] = summary_df['total_bases'].astype(float) /  9500000
+    summary_df['coverage_for_10M_genome']  = summary_df['total_bases'].astype(float) / 10000000
+    summary_df['coverage_warning']         = summary_df['coverage'].apply(lambda x: "Low coverage," if x <= 20 else "")
+    summary_df['warnings']                 = summary_df['warnings'] + summary_df['coverage_warning']
 
 ##########################################
 # creating files                         #
@@ -299,14 +325,15 @@ summary_df.to_csv(extended + '.txt', index=False, sep=";")
 # reducing to the top 1 or 2 results for each analysis
 final_columns = [
 # general information
+'coverage',
 'fastqc_total_sequences',
 'fastqc_flagged_sequences',
 'fastqc_avg_length',
 'fastp_passed_reads',
 'bbduk_phix_reads',
-'warnings',
 'quast_#_contigs',
 'quast_GC_(%)',
+'warnings',
 'amrfinder_genes_(per_cov/per_ident)',
 
 # species
